@@ -59,11 +59,7 @@ int Server::portIsValid(std::string const& port)
 
 void Server::manageServer(size_t const& port, std::string const& password)
 {
-    try {
-        setPassword(password);
-        createSocket();
-        bindSocket(port);
-    } catch (std::exception & e) {
-        std::cout << e.what() << std::endl;
-    }
+    setPassword(password);
+    createSocket();
+    bindSocket(port);
 }
