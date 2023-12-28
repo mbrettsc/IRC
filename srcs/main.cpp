@@ -2,9 +2,14 @@
 
 int main(int ac, char **av)
 {
-    if (ac == 3 && Server::portIsValid(av[1]))
+    try {
+        if (ac != 3)
+            throw std::runtime_error("this program takes 2 arguments");
+        if (!Server::portIsValid(av[1]))
+            throw std::runtime_error("invalid port");
         Server::getInstance()->manageServer(atoi(av[1]), av[2]);
-    else
-        std::cout << "this program takes 2 arguments" << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
     return 0;
 }
