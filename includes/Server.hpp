@@ -9,11 +9,16 @@
 class Server
 {
 private:
-    int fd;
+    int _sockFd;
+    std::string _password;
     Server();
-    static Server* serverPtr;
+    static Server* singleton;
+    void createSocket();
+    void bindSocket(size_t const & port);
 public:
     ~Server();
+    static int portIsValid(std::string const& port);
+    void setPassword(std::string const& password);
+    void manageServer(size_t const & port, std::string const & password);
     static Server* getInstance();
-    int getFd() const {return fd;}
 };
