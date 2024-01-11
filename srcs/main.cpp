@@ -4,7 +4,7 @@ int main(int ac, char **av)
 {
     try {
         if (ac != 3)
-            throw std::runtime_error("this program takes 2 arguments");
+            throw std::runtime_error("./ircserv <port> <password>");
         if (!Server::portIsValid(av[1]))
             throw std::runtime_error("invalid port");
         Server::getInstance()->manageServer(atoi(av[1]), av[2]);
