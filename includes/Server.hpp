@@ -9,8 +9,12 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <vector>
+#include <map>
 #include <fcntl.h>
 #include "Client.hpp"
+
+class Server;
+typedef int (Server::*CmdFunct)(std::vector<std::string>& , Client&);
 
 class Server
 {
@@ -26,21 +30,29 @@ private:
     fd_set _writeFds;
     fd_set _readFdsSup;
     fd_set _writeFdsSup;
+    std::map<std::string, CmdFunct> t_cmdFunct;
     // methods
     Server();
     static Server* singleton;
     void createSocket();
-    void bindSocket(size_t const & port);
-    void setPort(size_t const& port);
-    void setPassword(std::string const& password);
+    void bindSocket(size_t const&);
+    void setPort(size_t const&);
+    void setPassword(std::string const&);
     void printStatus();
     void acceptRequest();
     void readEvent();
     void initFds();
+    void initCommands();
     void run();
+    void kickClient(std::string const&, cliIt);
+    void commandHandler(std::string&, Client&);
+    // commands
+    int Pass(std::vector<std::string>&, Client&);
+    int Nick(std::vector<std::string>&, Client&);
+    
 public:
     ~Server();
-    static int portIsValid(std::string const& port);
-    void manageServer(size_t const & port, std::string const & password);
+    static int portIsValid(std::string const&);
+    void manageServer(size_t const &, std::string const &);
     static Server* getInstance();
 };

@@ -4,6 +4,12 @@
 Server* Server::singleton = NULL;
 Server::Server() {}
 
+void Server::initCommands()
+{
+    t_cmdFunct["PASS"] = &Server::Pass;
+    t_cmdFunct["NICK"] = &Server::Nick;
+}
+
 Server::~Server()
 {
     if (singleton != NULL)
@@ -78,6 +84,27 @@ void Server::acceptRequest()
     _clients.push_back(tmp);
 }
 
+void Server::commandHandler(std::string& str, Client& cli)
+{
+    std::string cmd = Utils::getCmd(str);
+    std::vector<std::string> param = Utils::getParam(str);
+    if (t_cmdFunct.find(cmd) == t_cmdFunct.end())
+        std::cout << cmd << " command not found!" << std::endl;
+    else
+        (this->*t_cmdFunct[cmd])(param, cli);
+}
+
+void Server::kickClient(std::string const& message, cliIt it)
+{
+    if (!message.empty())
+        write(it->cliFd, message.c_str(), message.size() + 2);
+    FD_CLR(it->cliFd, &_readFdsSup);
+    FD_CLR(it->cliFd, &_writeFdsSup);
+    close(it->cliFd);
+    std::cout <<"Client " << it->cliFd - 3  << " dissconnected!" << std::endl;
+    _clients.erase(it);
+}
+
 void Server::readEvent()
 {
     int readed;
@@ -86,18 +113,15 @@ void Server::readEvent()
         {
             readed = read(it->cliFd, buffer, 1024);
             if (readed <= 0)
-            {
-                FD_CLR(it->cliFd, &_readFdsSup);
-                FD_CLR(it->cliFd, &_writeFdsSup);
-                close(it->cliFd);
-                _clients.erase(it);
-                std::cout << it->nick <<  "client disconnected!" << std::endl;
-            }
+                kickClient(NULL, it);
             else
             {
                 buffer[readed] = 0;
                 std::string tmp = buffer;
                 std::cout << buffer;
+                commandHandler(tmp, *it);
+                if (!it->passcheku)
+                    kickClient("Password is wrong, GTFO\n", it);
             }
         }
     }
@@ -160,6 +184,7 @@ void Server::manageServer(size_t const& port, std::string const& password)
 {
     setPort(port);
     setPassword(password);
+    initCommands();
     createSocket();
     bindSocket(port);
     printStatus();

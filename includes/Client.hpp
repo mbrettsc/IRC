@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <sys/types.h>
-
+#include <arpa/inet.h>
 
 class Client
 {
@@ -19,7 +19,7 @@ public:
     int         passcheku;
     std::string buffer;
 
-    Client() :isCapt(0), passcheku(0), buffer("")  {}
+    Client();
 };
 
 typedef std::vector<Client>::iterator cliIt;
