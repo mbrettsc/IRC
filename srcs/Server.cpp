@@ -8,6 +8,7 @@ void Server::initCommands()
 {
     t_cmdFunct["PASS"] = &Server::Pass;
     t_cmdFunct["NICK"] = &Server::Nick;
+    t_cmdFunct["JOIN"] = &Server::Join;
 }
 
 Server::~Server()
@@ -103,6 +104,15 @@ void Server::kickClient(std::string const& message, cliIt it)
     close(it->cliFd);
     std::cout <<"Client " << it->cliFd - 3  << " dissconnected!" << std::endl;
     _clients.erase(it);
+}
+
+int Server::isNickExist(std::string const& nick)
+{
+    for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->nick == nick)
+            return 1;
+    }
+    return 0;
 }
 
 void Server::readEvent()

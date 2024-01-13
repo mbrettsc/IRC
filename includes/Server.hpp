@@ -12,9 +12,12 @@
 #include <map>
 #include <fcntl.h>
 #include "Client.hpp"
+#include "Channel.hpp"
+#include "Utils.hpp"
 
 class Server;
 typedef int (Server::*CmdFunct)(std::vector<std::string>& , Client&);
+typedef std::vector<Channel>::iterator chanIt;
 
 class Server
 {
@@ -31,9 +34,11 @@ private:
     fd_set _readFdsSup;
     fd_set _writeFdsSup;
     std::map<std::string, CmdFunct> t_cmdFunct;
+    std::vector<Channel> _channels;
     // methods
     Server();
     static Server* singleton;
+    int isNickExist(std::string const&);
     void createSocket();
     void bindSocket(size_t const&);
     void setPort(size_t const&);
@@ -49,7 +54,7 @@ private:
     // commands
     int Pass(std::vector<std::string>&, Client&);
     int Nick(std::vector<std::string>&, Client&);
-    
+    int Join(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);
