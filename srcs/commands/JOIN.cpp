@@ -6,6 +6,8 @@ int Server::Join(std::vector<std::string>& param, Client& client)
     int isThere = 0;
     if (chan.empty())
         Utils::writeMessage(client.cliFd, ERR_NEEDMOREPARAMS);
+    if (chan[0] != '#')
+        Utils::writeMessage(client.cliFd, "invalid chan");
     if (!client.nick.empty())
     {
         for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {

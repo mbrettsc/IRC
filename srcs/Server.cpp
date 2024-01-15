@@ -171,7 +171,9 @@ void Server::run()
             readEvent();
             state = 0;
             continue;
-        }        
+        }
+
+        
     }
 }
 
