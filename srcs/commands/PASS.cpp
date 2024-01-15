@@ -1,12 +1,13 @@
 #include "../../includes/Server.hpp"
 
-int Server::Pass(std::vector<std::string>& param, Client& client)
+void Server::Pass(std::vector<std::string>& param, Client& client)
 {
+    std::cout << "param 0 = " << param[0] << "password = " << _password << std::endl;
     if (param.empty())
         Utils::writeMessage(client.cliFd, ERR_NEEDMOREPARAMS);
-    else if (client.passcheku == 1)
+    else if (client.passChecked == 1)
         Utils::writeMessage(client.cliFd, ERR_ALREADYREGISTRED);
     else if (param.size() == 1 && param[0] == _password)
-        client.passcheku = 1;
-    return 0;
+        client.passChecked = 1;
+    passChecker(client);
 }

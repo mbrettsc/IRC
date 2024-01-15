@@ -1,8 +1,10 @@
 #include "../../includes/Server.hpp"
 
-int Server::Nick(std::vector<std::string>& param, Client& cli)
+void Server::Nick(std::vector<std::string>& param, Client& cli)
 {
-    if (cli.passcheku && param.size() == 1 && !isNickExist(param[0]) && !param[0].empty())
+    if (cli.isCap == NC)
+        passChecker(cli);
+    if (param.size() == 1 && !isNickExist(param[0]) && !param[0].empty())
         cli.nick = param[0];
     else
     {
@@ -11,5 +13,4 @@ int Server::Nick(std::vector<std::string>& param, Client& cli)
         else
             Utils::writeMessage(cli.cliFd, ERR_NICKNAMEINUSE(cli.nick));
     }
-    return 0;
 }

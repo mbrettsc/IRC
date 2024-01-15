@@ -1,7 +1,8 @@
 #include "../../includes/Server.hpp"
 
-int Server::Join(std::vector<std::string>& param, Client& client)
+void Server::Join(std::vector<std::string>& param, Client& client)
 {
+    passChecker(client);
     std::string chan = param[0], key = param[1];
     int isThere = 0;
     if (chan.empty())
@@ -31,10 +32,11 @@ int Server::Join(std::vector<std::string>& param, Client& client)
                 tmp.setKey(key);
             tmp.setOp();
             _channels.push_back(tmp);
+            std::cout << RPL_JOIN(client.nick, client.ipAddr,chan) << std::endl;
+            Utils::writeMessage(client.cliFd, RPL_MOIN);
             std::cout << "Channel " << chan << " created with " << key << std::endl;
         }
     }
     else
         Utils::writeMessage(client.cliFd, "Set your nick before!\r\n");
-    return 0;
 }
