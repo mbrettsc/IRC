@@ -11,6 +11,10 @@ void Server::initCommands()
     _commands["JOIN"] = &Server::Join;
     _commands["CAP"] = &Server::Cap;
     _commands["USER"] = &Server::User;
+    _commands["MODE"] = &Server::Mode;
+    _commands["WHO"] = &Server::Who;
+    _commands["QUIT"] = &Server::Quit;
+    _commands["PART"] = &Server::Part;
 }
 
 Server::~Server()
@@ -112,6 +116,11 @@ std::map<std::string, std::vector<std::string> > Server::getParams(std::string c
                 return ret;
             }
         }
+        if (ss.eof()) {
+            params.push_back("");
+            ret[cmd] = params;
+            return ret;
+        }
         ret[cmd] = params;
     }
     return ret;
@@ -121,12 +130,10 @@ void Server::commandHandler(std::string& str, Client& cli)
 {
     std::map<std::string, std::vector<std::string> > params = getParams(str);
     for (std::map<std::string, std::vector<std::string> >::iterator it = params.begin(); it != params.end(); ++it) {
-        std::cout << "command = " << it->first << std::endl;
-        std::cout << "params = " << it->second[0] << std::endl;
         if (_commands.find(it->first) == _commands.end())
             std::cout << it->first << " command not found!" << std::endl;
         else
-            (this->*_commands[it->first])(it->second, cli);    
+            (this->*_commands[it->first])(it->second, cli);
     }
 }
 
@@ -170,7 +177,7 @@ void Server::readEvent()
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
         if (FD_ISSET(it->cliFd, &_readFdsSup))
         {
-            readed = read(it->cliFd, buffer, 1024);
+            readed = recv(it->cliFd, buffer, 1024, 0);
             if (readed <= 0) {
                 kickClient(it);
                 break;
@@ -179,6 +186,8 @@ void Server::readEvent()
             {
                 buffer[readed] = 0;
                 std::string tmp = buffer;
+                if (tmp == "\n")
+                    break;
                 std::cout << buffer;
                 commandHandler(tmp, *it);
                 break;
@@ -224,7 +233,6 @@ void Server::run()
         }
         
         // write event
-        
         
     }
 }

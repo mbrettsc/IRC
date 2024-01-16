@@ -41,6 +41,8 @@ private:
     std::map<std::string, std::vector<std::string> > getParams(std::string const& str);
     static Server* singleton;
     int isNickExist(std::string const&);
+    int clientIsInThere(Client&, std::string const&);
+    int isChannelExist(std::string const&);
     void createSocket();
     void bindSocket(size_t const&);
     void setPort(size_t const&);
@@ -60,6 +62,10 @@ private:
     void Join(std::vector<std::string>&, Client&);
     void Cap(std::vector<std::string>&, Client&);
     void User(std::vector<std::string>&, Client&);
+    void Mode(std::vector<std::string>&, Client&);
+    void Who(std::vector<std::string>&, Client&);
+    void Quit(std::vector<std::string>&, Client&);
+    void Part(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);

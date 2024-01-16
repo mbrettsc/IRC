@@ -4,17 +4,19 @@
 #include <sstream>
 #include "../includes/Server.hpp"
 
-#define ERR_NICKNAMEINUSE(source)				    ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"         //NICK
-#define ERR_NICKNAMEEMPTY(source)				    ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"              //NICK
+#define RPL_JOIN(nick, ip, channel)	":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
+#define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
+
+#define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"
+#define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"
 
 #define ERR_NEEDMOREPARAMS "Need more or less params\r\n"
-
 #define ERR_ALREADYREGISTRED "Already registered\r\n"
-
 #define ERR_BADCHANNELKEY "Bad key\r\n"
-#define RPL_JOIN(nick, ip, channel)	":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
-#define RPL_MOIN ":mbrettsc!mbrettsc@10.11.18.5 JOIN chan\r\n"
 #define ERR_PASSWDMISMATCH "Password mismatch\r\n"
+#define ERR_NONICKNAMEGIVEN "No nickname given\r\n"
+#define ERR_INVCHANNAME "Invalid channel name, must be: #<channel name> <?key>\r\n"
+#define ERR_NOSUCHCHANNEL(source) ": 403 " + source + " :No such channel\r\n"
 
 class Utils
 {

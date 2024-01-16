@@ -3,25 +3,6 @@
 
 void Utils::writeMessage(int socket, std::string const& message)
 {
-    if (write(socket, message.c_str(), sizeof(message) + 2) < 0)
+    if ((write(socket, message.c_str(), message.length())) < 0)
         std::cout << "Message cannot send!" << std::endl;
-}
-
-std::string Utils::getCmd(std::string const& str)
-{
-    std::stringstream ss(str);  
-    std::string ret;
-    ss >> ret;
-    return ret;
-}
-
-std::vector<std::string> Utils::getParam(std::string const& str)
-{
-    std::stringstream ss(str);
-    std::vector<std::string> ret;
-    std::string tmp;
-    ss >> tmp;
-    while (ss >> tmp)
-        ret.push_back(tmp);
-    return ret;
 }
