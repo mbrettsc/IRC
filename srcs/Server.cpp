@@ -15,6 +15,7 @@ void Server::initCommands()
     _commands["WHO"] = &Server::Who;
     _commands["QUIT"] = &Server::Quit;
     _commands["PART"] = &Server::Part;
+    _commands["INFO"] = &Server::Info;
 }
 
 Server::~Server()
