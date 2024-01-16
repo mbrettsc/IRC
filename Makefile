@@ -5,7 +5,7 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):
-	$(CC) $(FLAGS) srcs/*.cpp srcs/commands/*.cpp -o $(NAME) 
+	$(CC) $(FLAGS) srcs/*.cpp -o $(NAME) 
 
 clean:
 	rm -rf $(NAME)

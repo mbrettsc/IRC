@@ -2,10 +2,7 @@
 
 #include <iostream>
 #include <sys/types.h>
-#include <arpa/inet.h>
 
-#define NC 0
-#define HEX 1
 
 class Client
 {
@@ -18,9 +15,11 @@ public:
     std::string nick;
     std::string pass;
 
-    int         isCap;
-    int         passChecked;
+    int         isCapt;
+    int         passcheku;
     std::string buffer;
 
-    Client();
+    Client() :isCapt(0), passcheku(0), buffer("")  {}
 };
+
+typedef std::vector<Client>::iterator cliIt;
