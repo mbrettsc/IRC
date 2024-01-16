@@ -66,6 +66,7 @@ private:
     void Who(std::vector<std::string>&, Client&);
     void Quit(std::vector<std::string>&, Client&);
     void Part(std::vector<std::string>&, Client&);
+    void Info(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);
