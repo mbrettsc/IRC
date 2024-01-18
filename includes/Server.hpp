@@ -40,9 +40,12 @@ private:
     Server();
     std::map<std::string, std::vector<std::string> > getParams(std::string const& str);
     static Server* singleton;
+    void showRightGui(Client &cli, Channel &cha);
     int isNickExist(std::string const&);
     int clientIsInThere(Client&, std::string const&);
     int isChannelExist(std::string const&);
+    void toChannel(std::vector<std::string>&, Client&);
+    void toClient(std::vector<std::string>&, Client&);
     void createSocket();
     void bindSocket(size_t const&);
     void setPort(size_t const&);

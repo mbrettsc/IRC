@@ -6,6 +6,10 @@
 
 #define RPL_JOIN(nick, ip, channel)	":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 #define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
+#define RPL_PART(source, channel) ":" + source + " PART :" + channel + "\r\n"
+#define RPL_INFO(source, message) ":" + source + " INFO :" "\r\n" + message + "\r\n"
+#define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
+#define RPL_ENDOFNAMES(nick, channel)               ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
 
 #define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"
 #define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"
@@ -26,4 +30,5 @@ public:
     static std::map<std::string, std::vector<std::string> > getParams(std::string const&);
     static std::string getCmd(std::string const&);
     static std::vector<std::string> getParam(std::string const&);
+    static void writeAllMessage(std::vector<int> const&, std::string const&);
 };

@@ -13,4 +13,12 @@ public:
     Client* op;
     std::vector<Client> _channelClients;
     Channel() : _key(""), op(NULL) {}
+
+    std::vector<int> getFds()
+    {
+        std::vector<int> fds;
+        for (std::vector<Client>::iterator it = _channelClients.begin(); it != _channelClients.end(); ++it)
+            fds.push_back(it->cliFd);
+        return fds;
+    }
 };

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <vector>
 
 #define NC 0
 #define HEX 1

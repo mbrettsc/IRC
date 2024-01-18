@@ -178,7 +178,7 @@ void Server::readEvent(int* state)
         if (FD_ISSET(it->cliFd, &_readFdsSup))
         {
             *state = 0;
-            int readed = recv(it->cliFd, buffer, 1024, 0);
+            int readed = read(it->cliFd, buffer, 1024);
             if (readed <= 0) {
                 kickClient(it);
                 break;
@@ -213,13 +213,11 @@ void Server::writeEvent()
         {
             int writed = write(it->cliFd, it->_messageBox[0].c_str(), it->_messageBox[0].size());
             it->_messageBox.erase(it->_messageBox.begin());
-            if (writed <= 0) {
-                kickClient(it);
-                break;
-            }
             if (it->_messageBox.empty())
-                    FD_CLR(it->cliFd, &_writeFds);
-            break;
+                FD_CLR(it->cliFd, &_writeFds);
+            if (writed <= 0)
+                kickClient(it);
+            break ;
         }
     }
 }
@@ -253,7 +251,8 @@ void Server::run()
         // write event
         if (state) {
             writeEvent();
-            state = 0; continue;
+            state = 0;
+            continue;
         }
         
     }
