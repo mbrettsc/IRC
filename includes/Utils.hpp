@@ -6,6 +6,7 @@
 
 #define RPL_JOIN(nick, ip, channel)	":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 #define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
+#define RPL_INFO(source, message) ":" + source + " INFO :" "\r\n" + message + "\r\n"
 
 #define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"
 #define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"

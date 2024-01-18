@@ -28,5 +28,5 @@ std::string infoMessage()
 void Server::Info(std::vector<std::string>& x, Client &client)
 {
     (void)x;
-    Utils::writeMessage(client.cliFd, infoMessage());
+    Utils::writeMessage(client.cliFd, RPL_INFO(client.nick, infoMessage()));
 }
