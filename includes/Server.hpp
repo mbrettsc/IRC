@@ -60,6 +60,10 @@ private:
     void passChecker(Client&);
     void kickClient(cliIt&);
     void commandHandler(std::string&, Client&);
+    void modesBanned(chanIt&, std::vector<std::string>& param, int* flag);
+    void modesLimit(chanIt&, std::vector<std::string>& param, int* flag);
+    void modesKey(chanIt&, std::vector<std::string>& param, int* flag);
+
     // commands
     void Pass(std::vector<std::string>&, Client&);
     void Nick(std::vector<std::string>&, Client&);
@@ -72,6 +76,7 @@ private:
     void Part(std::vector<std::string>&, Client&);
     void Info(std::vector<std::string>&, Client&);
     void Privmsg(std::vector<std::string>&, Client&);
+    void Kick(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);

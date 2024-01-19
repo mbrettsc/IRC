@@ -1,5 +1,4 @@
 #include "../includes/Utils.hpp"
-#include <unistd.h>
 
 void Utils::writeMessage(int socket, std::string const& message)
 {

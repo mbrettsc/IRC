@@ -23,5 +23,6 @@ public:
     int         passChecked;
 
     Client():isCap(0), passChecked(0) {}
+    std::string	        getPrefix() const;
 
 };

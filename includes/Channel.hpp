@@ -10,9 +10,12 @@ public:
     std::string _name;
     std::string _topic;
     std::string _key;
+    size_t userLimit;
     Client* op;
     std::vector<Client> _channelClients;
-    Channel() : _key(""), op(NULL) {}
+    std::vector<std::string> _bannedClients;
+    Channel() : _key(""),  userLimit(0), op(NULL) {}
+
 
     std::vector<int> getFds()
     {

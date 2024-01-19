@@ -33,7 +33,7 @@ void Server::Join(std::vector<std::string>& param, Client& client)
     std::string chan = param[0], key = param[1];
     int isThere = 0;
     if (chan.empty()) {
-        Utils::writeMessage(client.cliFd, ERR_NEEDMOREPARAMS);
+        Utils::writeMessage(client.cliFd, ERR_NEEDMOREPARAMS(client.nick, "JOIN"));
         return;
     }
     if (chan[0] != '#') {
@@ -56,7 +56,7 @@ void Server::Join(std::vector<std::string>& param, Client& client)
                         showRightGui(client, *it);
                     }
                     else
-                        Utils::writeMessage(client.cliFd, ERR_BADCHANNELKEY);
+                        Utils::writeMessage(client.cliFd, ERR_BADCHANNELKEY(client.nick, chan));
                     isThere = 1;
                 }
             }

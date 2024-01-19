@@ -12,7 +12,7 @@ int findChannel(std::vector<Channel>& channels, std::string const& chanName)
 void Server::toChannel(std::vector<std::string>& param, Client& cli)
 {
     if (findChannel(_channels, param[0]) == 0) {
-        Utils::writeMessage(cli.cliFd, ERR_NOSUCHCHANNEL(param[0]));
+        Utils::writeMessage(cli.cliFd, ERR_NOSUCHCHANNEL(param[0], param[1]));
         return ;
     }
     if (clientIsInThere(cli, param[0]) == 1)
@@ -59,10 +59,11 @@ void Server::toClient(std::vector<std::string>& param, Client& cli)
 
 void Server::Privmsg(std::vector<std::string>& param, Client& cli)
 {
-    passChecker(cli);
+    if (cli.isCap == NC)
+        passChecker(cli);
     if (param.size() < 2)
     {
-        Utils::writeMessage(cli.cliFd, ERR_NEEDMOREPARAMS);
+        Utils::writeMessage(cli.cliFd, ERR_NEEDMOREPARAMS(cli.nick, param[0]));
         return ;
     }
     else if (param[0][0] == '#')

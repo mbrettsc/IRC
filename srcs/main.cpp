@@ -13,3 +13,21 @@ int main(int ac, char **av)
     }
     return 0;
 }
+
+/*   
+1 - TO DO LARI FIXLE
+2 - COMMANDS:
+* KICK
+* MODE FIX
+* JOIN FIX
+* PART FIX
+* NOTICE
+* WHOIS
+* TOPIC
+* USER RPL
+* LIST
+* PING 
+* PONG
+* BOT
+
+*/
