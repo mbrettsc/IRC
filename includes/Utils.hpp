@@ -4,6 +4,7 @@
 #include <sstream>
 #include "../includes/Server.hpp"
 
+
 #define RPL_JOIN(nick, ip, channel)					":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 #define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
 #define RPL_ENDOFNAMES(nick, channel)               ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
@@ -44,6 +45,7 @@
 #define ERR_NICKNAMEINUSE(source)				    ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"         //NICK
 #define ERR_NICKNAMEEMPTY(source)				    ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"              //NICK
 #define RPL_NOTOPIC(nick, channel)                  ": 331 " + nick + " " + channel + " :No topic is set" + "\r\n"                      //TOPIC
+
 
 #define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"
 #define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"
