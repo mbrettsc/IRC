@@ -17,16 +17,28 @@ std::string infoMessage()
     message += "| * Developers:                                            |\n";
     message += "|   - Martin Burak Brettschneider                          |\n";
     message += "|   - Umut Akkan                                           |\n";
+    message += "|   - Yiğithan Karabulut                                   |\n";
     message += "|                                                          |\n";
-    message += "| * Project Information:                                   |\n";
-    message += "|   - Start Date: Unknown                                  |\n";
-    message += "|   - Finish Date: 1459                                    |\n";
+    message += "| * Current commands:                                      |\n";
+    message += "|   - CAP                                                  |\n";
+    message += "|   - INFO                                                 |\n";
+    message += "|   - JOIN                                                 |\n";
+    message += "|   - MODE                                                 |\n";
+    message += "|   - NICK                                                 |\n";
+    message += "|   - PART                                                 |\n";
+    message += "|   - PASS                                                 |\n";
+    message += "|   - PRIVMSG                                              |\n";
+    message += "|   - QUIT                                                 |\n";
+    message += "|   - USER                                                 |\n";
+    message += "|   - WHO                                                  |\n";
     message += " +--------------------------------------------------------+\n";
     return (message);
 }
 
 void Server::Info(std::vector<std::string>& x, Client &client)
 {
+    if (client.isCap == NC)
+        passChecker(client);
     (void)x;
     Utils::writeMessage(client.cliFd, RPL_INFO(client.nick, infoMessage()));
 }

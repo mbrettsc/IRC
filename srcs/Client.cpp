@@ -1,3 +1,5 @@
 #include "../includes/Client.hpp"
 
-Client::Client():isCap(0), passChecked(0), buffer("") {}
+std::string Client::getPrefix() const {
+	return this->nick + (this->user.empty() ? "" : "!~" + this->user) + (this->ip.empty() ? "" : "@" + this->ip);
+}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <vector>
 
 #define NC 0
 #define HEX 1
@@ -16,11 +17,12 @@ public:
     std::string ip;
     std::string user;
     std::string nick;
-    std::string pass;
+    std::vector<std::string> _messageBox;
 
     int         isCap;
     int         passChecked;
-    std::string buffer;
 
-    Client();
+    Client():isCap(0), passChecked(0) {}
+    std::string	        getPrefix() const;
+
 };

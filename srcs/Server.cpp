@@ -16,6 +16,11 @@ void Server::initCommands()
     _commands["QUIT"] = &Server::Quit;
     _commands["PART"] = &Server::Part;
     _commands["INFO"] = &Server::Info;
+    _commands["PRIVMSG"] = &Server::Privmsg;
+    _commands["MODE"] = &Server::Mode;
+    _commands["mode"] = &Server::Mode;
+    _commands["KICK"] = &Server::Kick;
+
 }
 
 Server::~Server()
@@ -44,18 +49,17 @@ void Server::setPassword(std::string const& password)
 
 void Server::createSocket()
 {
-    if ((_serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ((_serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) // AF_INET = IPV4, SOCK_STREAM = TCP
         throw std::runtime_error("Socket");
 
     const int enable = 1;
-    if (setsockopt(_serverFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+    if (setsockopt(_serverFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) // SO_REUSEADDR = PORT AND ADDR REUSE
         throw std::runtime_error("Setsockopt");
 }
 
 void Server::bindSocket(size_t const & port)
 {
     struct sockaddr_in server_addr;
-
 
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -65,7 +69,7 @@ void Server::bindSocket(size_t const & port)
     if (bind(_serverFd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
         throw std::runtime_error("Bind");
 
-    if (listen(_serverFd, 128) < 0)
+    if (listen(_serverFd, 128) < 0) // TODO LISTEN DOWN
         throw std::runtime_error("Listen");
 }
 
@@ -90,7 +94,7 @@ void Server::acceptRequest()
     if (tmp.cliFd <= 0)
         throw std::runtime_error("Accept failed");
     tmp.port = ntohs(cliAddr.sin_port);
-    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp.ipAddr, INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp.ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
     FD_SET(tmp.cliFd, &_readFds);
     std::cout << "New client connected!" << std::endl;
     Utils::writeMessage(tmp.cliFd, "Welcome to our irc server\n");
@@ -102,11 +106,12 @@ std::map<std::string, std::vector<std::string> > Server::getParams(std::string c
     std::stringstream ss(str);
     std::string tmp;
     std::map<std::string, std::vector<std::string> > ret;
+    std::vector<std::string> params;
     ss >> tmp;
     while (1)
     {
         std::string cmd = tmp;
-        std::vector<std::string> params;
+        params.clear();
         ss >> tmp;
         while (_commands.find(tmp) == _commands.end())
         {
@@ -171,14 +176,13 @@ int Server::isNickExist(std::string const& nick)
     return 0;
 }
 
-void Server::readEvent()
+void Server::readEvent(int* state)
 {
-    int readed;
-
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
         if (FD_ISSET(it->cliFd, &_readFdsSup))
         {
-            readed = recv(it->cliFd, buffer, 1024, 0);
+            *state = 0;
+            int readed = read(it->cliFd, buffer, 1024);
             if (readed <= 0) {
                 kickClient(it);
                 break;
@@ -206,6 +210,22 @@ void Server::initFds()
     FD_SET(_serverFd, &_readFds);
 }
 
+void Server::writeEvent()
+{
+    for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
+        if (FD_ISSET(it->cliFd, &_writeFdsSup))
+        {
+            int writed = write(it->cliFd, it->_messageBox[0].c_str(), it->_messageBox[0].size());
+            it->_messageBox.erase(it->_messageBox.begin());
+            if (it->_messageBox.empty())
+                FD_CLR(it->cliFd, &_writeFds);
+            if (writed <= 0)
+                kickClient(it);
+            break ;
+        }
+    }
+}
+
 void Server::run()
 {
     int state = 0;
@@ -215,30 +235,32 @@ void Server::run()
     {
         while (state == 0)
         {
-            _readFdsSup = _readFds;
+            _readFdsSup = _readFds; // TO DO SELECT IS QUEUED ?
             _writeFdsSup = _writeFds;
             state = select(_clients.size() + 4, &_readFdsSup, &_writeFdsSup, NULL, 0);
         }
         // new connection
         if (FD_ISSET(_serverFd, &_readFdsSup)) {
             acceptRequest();
-            state = 0;
-            continue;
+            state = 0; continue;
         }
         
         // read event
         if (state) {
-            readEvent();
+            readEvent(&state);
+            if (state == 0)
+                continue;
+        }
+        
+        // write event
+        if (state) {
+            writeEvent();
             state = 0;
             continue;
         }
         
-        // write event
-        
     }
 }
-
-
 
 void Server::printStatus()
 {

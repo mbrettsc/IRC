@@ -22,7 +22,6 @@ void Server::Who(std::vector<std::string>& param, Client& cli)
         std::cout << it->_name << " " << param[0] << std::endl;
         if (it->_name == param[0])
         {
-            std::cout << "nasil" << std::endl;
             Utils::writeMessage(cli.cliFd, "Users in channel:\r\n");
             for (cliIt it2 = it->_channelClients.begin(); it2 != it->_channelClients.end(); ++it2) {
                 std::cout << "* " + it2->nick + "\r\n" << std::endl;

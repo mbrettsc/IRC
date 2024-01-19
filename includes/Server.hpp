@@ -40,22 +40,30 @@ private:
     Server();
     std::map<std::string, std::vector<std::string> > getParams(std::string const& str);
     static Server* singleton;
+    void showRightGui(Client &cli, Channel &cha);
     int isNickExist(std::string const&);
     int clientIsInThere(Client&, std::string const&);
     int isChannelExist(std::string const&);
+    void toChannel(std::vector<std::string>&, Client&);
+    void toClient(std::vector<std::string>&, Client&);
     void createSocket();
     void bindSocket(size_t const&);
     void setPort(size_t const&);
     void setPassword(std::string const&);
     void printStatus();
     void acceptRequest();
-    void readEvent();
+    void readEvent(int*);
+    void writeEvent();
     void initFds();
     void initCommands();
     void run();
     void passChecker(Client&);
     void kickClient(cliIt&);
     void commandHandler(std::string&, Client&);
+    void modesBanned(chanIt&, std::vector<std::string>& param, int* flag);
+    void modesLimit(chanIt&, std::vector<std::string>& param, int* flag);
+    void modesKey(chanIt&, std::vector<std::string>& param, int* flag);
+
     // commands
     void Pass(std::vector<std::string>&, Client&);
     void Nick(std::vector<std::string>&, Client&);
@@ -67,6 +75,8 @@ private:
     void Quit(std::vector<std::string>&, Client&);
     void Part(std::vector<std::string>&, Client&);
     void Info(std::vector<std::string>&, Client&);
+    void Privmsg(std::vector<std::string>&, Client&);
+    void Kick(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);
