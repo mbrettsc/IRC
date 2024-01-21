@@ -1,10 +1,8 @@
 #include "../../includes/Server.hpp"
+#include <algorithm>
 
 void Server::Mode(std::vector<std::string>& param, Client& cli)
 {
-    for (std::vector<std::string>::iterator it = param.begin(); it != param.end(); ++it)
-        std::cout << *it << std::endl;
-    std::cout << "---------\n";
     if (cli.isCap == NC)
         passChecker(cli);
     if (param.size() < 1 || param.size() > 3) {
@@ -29,16 +27,12 @@ void Server::Mode(std::vector<std::string>& param, Client& cli)
             modesLimit(it, param, &flag);
             modesKey(it, param, &flag);
             if (!flag) {
-                Utils::writeMessage(cli.cliFd, "SEKTER GET fuck you motherfucker nigga bitch");
+                Utils::writeMessage(cli.cliFd, "No suc");
                 return ;
             }
-            std::cout << it->userLimit << std::endl;
-            
         }
     }
 }
-
-#include <algorithm>
 
 void Server::modesBanned(chanIt& it, std::vector<std::string>& param, int* flag)
 {
@@ -106,4 +100,3 @@ void Server::modesKey(chanIt& it, std::vector<std::string>& param, int* flag)
 // MODE #<channel name> +l 20   -----> (max user count)
 // mode #<channel name> +k 123  -----> (sifre 123 oldu.)
 // mode #channel name > -k 
-// kanka irc iste sohbet ediyoruz amk

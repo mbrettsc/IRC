@@ -1,18 +1,8 @@
 #include "../../includes/Server.hpp"
 
-int Server::isChannelExist(std::string const& channelName)
-{
-    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
-        if (it->_name == channelName)
-            return 1;
-    }
-    return 0;
-}
-
 void Server::Who(std::vector<std::string>& param, Client& cli)
 {
-    if (cli.isCap == NC)
-        passChecker(cli);
+    passChecker(cli);
     std::cout << param.size() << std::endl;
     if (param.size() > 1)
         return ;

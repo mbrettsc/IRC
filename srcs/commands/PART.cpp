@@ -2,9 +2,8 @@
 
 void Server::Part(std::vector<std::string>& param, Client& cli)
 {
-    if (cli.isCap == NC)
-        passChecker(cli);
-    if (param.size() >= 2)
+    passChecker(cli);
+    if (param.size() > 2)
         Utils::writeMessage(cli.cliFd, ERR_NEEDMOREPARAMS(cli.nick, param[0]));
     else if (isChannelExist(param[0]))
     {
@@ -14,6 +13,8 @@ void Server::Part(std::vector<std::string>& param, Client& cli)
                     if (it2->nick == cli.nick) {
                         Utils::writeMessage(cli.cliFd, RPL_PART(cli.nick, param[0]));
                         it->_channelClients.erase(it2);
+                        if (it->_channelClients.size() > 0)
+                            it->op = &it->_channelClients[0];
                         std::cout << "Client " << cli.nick << " has left channel " << param[0] << std::endl;
                         break;
                     }

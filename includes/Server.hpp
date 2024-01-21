@@ -72,11 +72,13 @@ private:
     void User(std::vector<std::string>&, Client&);
     void Mode(std::vector<std::string>&, Client&);
     void Who(std::vector<std::string>&, Client&);
+    void Whois(std::vector<std::string>&, Client&);
     void Quit(std::vector<std::string>&, Client&);
     void Part(std::vector<std::string>&, Client&);
     void Info(std::vector<std::string>&, Client&);
     void Privmsg(std::vector<std::string>&, Client&);
     void Kick(std::vector<std::string>&, Client&);
+    void Topic(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);

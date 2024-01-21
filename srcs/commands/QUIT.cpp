@@ -2,8 +2,7 @@
 
 void Server::Quit(std::vector<std::string>& param, Client& cli)
 {
-    if (cli.isCap == NC)
-        passChecker(cli);
+    passChecker(cli);
     if (param.empty())
         std::cout << "Client " << cli.nick << " quit" << std::endl;
     else
