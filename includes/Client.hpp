@@ -14,8 +14,10 @@ public:
     int cliFd;
     int port;
     char ipAddr[INET_ADDRSTRLEN];
-    std::string ip;
     std::string user;
+    std::string host;
+    std::string ip;
+    std::string realName;
     std::string nick;
     std::vector<std::string> _messageBox;
 

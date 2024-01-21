@@ -27,6 +27,6 @@ void Server::Nick(std::vector<std::string>& param, Client& cli)
         else if (param[0].empty())
             Utils::writeMessage(cli.cliFd, ERR_NICKNAMEEMPTY(cli.nick));
         else
-            Utils::writeMessage(cli.cliFd, ERR_NICKNAMEINUSE(cli.nick));
+            Utils::writeMessage(cli.cliFd, ERR_NICKNAMEINUSE(param[0]));
     }
 }

@@ -1,17 +1,8 @@
 #include "../../includes/Server.hpp"
 
-int findChannel(std::vector<Channel>& channels, std::string const& chanName)
-{
-    for (chanIt it = channels.begin(); it != channels.end(); ++it) {
-        if (it->_name == chanName)
-            return (1);
-    }
-    return (0);
-}
-
 void Server::toChannel(std::vector<std::string>& param, Client& cli)
 {
-    if (findChannel(_channels, param[0]) == 0) {
+    if (isChannelExist(param[0]) == 0) {
         Utils::writeMessage(cli.cliFd, ERR_NOSUCHCHANNEL(param[0], param[1]));
         return ;
     }
@@ -59,8 +50,7 @@ void Server::toClient(std::vector<std::string>& param, Client& cli)
 
 void Server::Privmsg(std::vector<std::string>& param, Client& cli)
 {
-    if (cli.isCap == NC)
-        passChecker(cli);
+    passChecker(cli);
     if (param.size() < 2)
     {
         Utils::writeMessage(cli.cliFd, ERR_NEEDMOREPARAMS(cli.nick, param[0]));

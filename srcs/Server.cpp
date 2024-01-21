@@ -19,8 +19,10 @@ void Server::initCommands()
     _commands["PRIVMSG"] = &Server::Privmsg;
     _commands["MODE"] = &Server::Mode;
     _commands["mode"] = &Server::Mode;
+    _commands["WHOIS"] = &Server::Whois;
+    _commands["whois"] = &Server::Whois;
     _commands["KICK"] = &Server::Kick;
-
+    _commands["TOPIC"] = &Server::Topic;
 }
 
 Server::~Server()
