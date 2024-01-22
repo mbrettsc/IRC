@@ -17,7 +17,7 @@ void Server::Kick(std::vector<std::string>& param, Client& cli)
         if (it->_name == param[0])
         {
             flag = 1;
-            if (cli.nick != it->op->nick) {
+            if (cli.nick != it->opNick) {
                 Utils::writeMessage(cli.cliFd, ERR_CHANOPRIVSNEEDED(cli.nick, param[0]));
                 return ;
             }
@@ -27,7 +27,7 @@ void Server::Kick(std::vector<std::string>& param, Client& cli)
                     std::string msg = "";
                     if (param.size() == 3)
                         msg = param[3];
-                    Utils::writeMessage(it2->cliFd, RPL_KICK(it->op->nick, param[0], param[1], msg));
+                    Utils::writeMessage(it2->cliFd, RPL_KICK(it->opNick, param[0], param[1], msg));
                     Utils::writeMessage(it2->cliFd, RPL_ENDOFNAMES(it2->nick, param[0]));
                     it->_channelClients.erase(it2);
                     showRightGui(cli, *it);

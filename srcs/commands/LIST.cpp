@@ -7,7 +7,7 @@ void Server::List(std::vector<std::string>& param, Client& cli)
     for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {
         std::string tmp = Utils::intToString(it->_channelClients.size());
         if (it->_topic == "")
-            Utils::writeMessage(cli.cliFd, RPL_LIST(cli.nick, it->_name, tmp, "No topic"));
+            Utils::writeMessage(cli.cliFd, RPL_LIST(cli.nick, it->_name, tmp, ":No topic is set"));
         else
             Utils::writeMessage(cli.cliFd, RPL_LIST(cli.nick, it->_name, tmp, it->_topic.c_str()));
     }

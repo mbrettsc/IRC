@@ -11,17 +11,10 @@ public:
     std::string _topic;
     std::string _key;
     size_t userLimit;
-    Client* op;
+    std::string opNick;
     std::vector<Client> _channelClients;
-    std::vector<std::string> _bannedClients;
-    Channel() : _key(""),  userLimit(0), op(NULL) {}
+    Channel() : _topic(""), _key(""),  userLimit(0), opNick("") {}
 
 
-    std::vector<int> getFds()
-    {
-        std::vector<int> fds;
-        for (std::vector<Client>::iterator it = _channelClients.begin(); it != _channelClients.end(); ++it)
-            fds.push_back(it->cliFd);
-        return fds;
-    }
+    std::vector<int> getFds() const;
 };

@@ -26,11 +26,11 @@ void Server::Topic(std::vector<std::string>& param, Client& cli)
         if (param[0] == it->_name) {
             flag = 1;
             if (param.size() == 1 || param[1] == ":") {
-                Utils::writeMessage(cli.cliFd, RPL_NOTOPIC(it->op->nick, param[0]));
+                Utils::writeMessage(cli.cliFd, RPL_NOTOPIC(it->opNick, param[0]));
                 return ;
             }
             else if (param.size() >= 2) {
-                if (it->op->nick != cli.nick) {
+                if (it->opNick != cli.nick) {
                     Utils::writeMessage(cli.cliFd, ERR_CHANOPRIVSNEEDED(cli.nick, param[0]));
                     return ;
                 }

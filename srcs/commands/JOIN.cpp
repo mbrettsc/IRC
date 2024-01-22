@@ -28,7 +28,7 @@ void Server::Join(std::vector<std::string>& param, Client& client)
                             return;
                         }
                         it->_channelClients.push_back(client);
-                        it->op = &it->_channelClients[0];
+                        it->opNick = it->_channelClients[0].nick;
                         Utils::writeMessage(client.cliFd, RPL_JOIN(client.nick, client.ip, chan));
                         std::cout << "Client " << client.nick << " has entered \'" << chan << "\'" << std::endl;
                         showRightGui(client, *it);
@@ -42,11 +42,10 @@ void Server::Join(std::vector<std::string>& param, Client& client)
             {
                 Channel tmp;
                 tmp._name = chan;
-                std::cout << key << std::endl << !key.empty() << std::endl;
                 if (!key.empty())
                     tmp._key = key;
-                tmp.op = &client;
                 tmp._channelClients.push_back(client);
+                tmp.opNick = tmp._channelClients[0].nick;
                 _channels.push_back(tmp);
                 Utils::writeMessage(client.cliFd, RPL_JOIN(client.nick, client.ip, chan));
                 if (!key.empty())

@@ -8,7 +8,7 @@ void Server::getAfterColon(std::vector<std::string>& param)
     }
 }
 
-Channel Server::getChannel(std::string const& channelName)
+Channel& Server::getChannel(std::string const& channelName)
 {
     chanIt it;
     for (it = _channels.begin(); it != _channels.end(); ++it) {
@@ -42,12 +42,21 @@ int Server::clientIsInThere(Client& client, std::string const& chanName)
     return (0);
 }
 
+int Server::getOpFd(std::string const& opName)
+{
+    for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->nick == opName)
+            return (it->cliFd);
+    }
+    return (0);
+}
+
 void Server::showRightGui(Client &cli, Channel &tmp) {
     std::string msg;
     if (tmp._name.empty())
         return;
     for(std::vector<Client>::iterator it = tmp._channelClients.begin() ; it != tmp._channelClients.end(); ++it) {
-        if (it->cliFd == tmp.op->cliFd)
+        if (it->cliFd == getOpFd(tmp.opNick))
             msg += "@";
         msg += (*it).nick + " ";
     }

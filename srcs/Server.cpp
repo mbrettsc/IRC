@@ -27,6 +27,8 @@ void Server::initCommands()
     _commands["topic"] = &Server::Topic;
     _commands["LIST"] = &Server::List;
     _commands["INVITE"] = &Server::Invite;
+    // _commands["OP"] = &Server::Op;
+    // _commands["op"] = &Server::Op;
 }
 
 Server::~Server()
@@ -114,9 +116,12 @@ std::map<std::string, std::vector<std::string> > Server::getParams(std::string c
     std::map<std::string, std::vector<std::string> > ret;
     std::vector<std::string> params;
     ss >> tmp;
+    std::string cmd;
     while (1)
     {
-        std::string cmd = tmp;
+        cmd = tmp;
+        if (ret.find(cmd) != ret.end())
+            return ret;
         params.clear();
         ss >> tmp;
         while (_commands.find(tmp) == _commands.end())

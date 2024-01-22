@@ -42,6 +42,7 @@ private:
     static Server* singleton;
     void showRightGui(Client &cli, Channel &cha);
     int isNickExist(std::string const&);
+    int getOpFd(std::string const& opName);
     int clientIsInThere(Client&, std::string const&);
     int isChannelExist(std::string const&);
     void toChannel(std::vector<std::string>&, Client&);
@@ -50,7 +51,7 @@ private:
     void bindSocket(size_t const&);
     void setPort(size_t const&);
     void setPassword(std::string const&);
-    Channel getChannel(std::string const&);
+    Channel& getChannel(std::string const&);
     void printStatus();
     void acceptRequest();
     void readEvent(int*);
@@ -61,7 +62,7 @@ private:
     void passChecker(Client&);
     void kickClient(cliIt&);
     void commandHandler(std::string&, Client&);
-    void modesBanned(chanIt&, std::vector<std::string>& param, int* flag);
+    void modesOp(chanIt&, std::vector<std::string>& param, int* flag);
     void modesLimit(chanIt&, std::vector<std::string>& param, int* flag);
     void modesKey(chanIt&, std::vector<std::string>& param, int* flag);
     void getAfterColon(std::vector<std::string>& param);

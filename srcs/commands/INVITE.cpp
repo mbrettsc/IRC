@@ -12,7 +12,7 @@ void Server::Invite(std::vector<std::string>& param, Client& cli)
         {
             flag = 1;
             Channel chan = getChannel(param[1]);
-            if (cli.nick != chan.op->nick) {
+            if (cli.nick != chan.opNick) {
                 Utils::writeMessage(cli.cliFd, ERR_CHANOPRIVSNEEDED(cli.nick, param[1]));
                 return ;
             }

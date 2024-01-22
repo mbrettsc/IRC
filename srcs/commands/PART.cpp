@@ -14,7 +14,7 @@ void Server::Part(std::vector<std::string>& param, Client& cli)
                         Utils::writeMessage(cli.cliFd, RPL_PART(cli.nick, param[0]));
                         it->_channelClients.erase(it2);
                         if (it->_channelClients.size() > 0)
-                            it->op = &it->_channelClients[0];
+                            it->opNick = it->_channelClients[0].nick;
                         std::cout << "Client " << cli.nick << " has left channel " << param[0] << std::endl;
                         break;
                     }
