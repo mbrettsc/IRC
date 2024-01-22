@@ -12,3 +12,11 @@ void Utils::writeAllMessage(std::vector<int> const& fds, std::string const& mess
         writeMessage(*it, message);
     }
 }
+
+std::string Utils::intToString(int n)
+{
+    std::stringstream ss;
+    ss << n;
+    std::string str = ss.str();
+    return str;
+}
