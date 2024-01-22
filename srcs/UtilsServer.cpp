@@ -1,8 +1,27 @@
 #include "../includes/Server.hpp"
 
+void Server::getAfterColon(std::vector<std::string>& param)
+{
+    param[1].erase(0, 1);
+    for (size_t i = 2; i < param.size(); ++i) {
+        param[1] += " " + param[i];
+    }
+}
+
+Channel Server::getChannel(std::string const& channelName)
+{
+    chanIt it;
+    for (it = _channels.begin(); it != _channels.end(); ++it) {
+        if (it->_name == channelName) {
+            break;
+        }
+    }
+    return *it;
+}
+
 int Server::isChannelExist(std::string const& channelName)
 {
-    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+    for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {
         if (it->_name == channelName)
             return 1;
     }

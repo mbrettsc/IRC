@@ -9,16 +9,11 @@ void Server::toChannel(std::vector<std::string>& param, Client& cli)
     if (clientIsInThere(cli, param[0]) == 1)
     {
         if (param[1][0] == ':') {
-            param[1].erase(0, 1);
-            for (size_t i = 2; i < param.size(); ++i) {
-                param[1] += " " + param[i];
-            }
+            getAfterColon(param);
         }
         for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
             if (it->nick != cli.nick && clientIsInThere(*it, param[0]) == 1) {
-                std::string msg = ":" + cli.nick + " PRIVMSG " + param[0] + " :" + param[1] + "\r\n";
-                it->_messageBox.push_back(msg);
-                std::cout << "msg: " << it->_messageBox.size() << it->cliFd << std::endl;
+                it->_messageBox.push_back(RPL_PRIVMSG(cli.nick, param[0], param[1]));
                 FD_SET(it->cliFd, &_writeFds);
             }
         }
@@ -32,13 +27,9 @@ void Server::toClient(std::vector<std::string>& param, Client& cli)
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
         if (param[0] == it->nick) {
             if (param[1][0] == ':') {
-                param[1].erase(0, 1);
-                for (size_t i = 2; i < param.size(); ++i) {
-                    param[1] += " " + param[i];
-                }
+               getAfterColon(param);
             }
-            std::string msg = ":" + cli.nick + " PRIVMSG " + param[0] + ": " + param[1] + "\r\n";
-            it->_messageBox.push_back(msg);
+            it->_messageBox.push_back(RPL_PRIVMSG(cli.nick, param[0], param[1]));
             FD_SET(it->cliFd, &_writeFds);
             flag = 1;
             return ;

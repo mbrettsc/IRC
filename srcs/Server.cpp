@@ -17,12 +17,16 @@ void Server::initCommands()
     _commands["PART"] = &Server::Part;
     _commands["INFO"] = &Server::Info;
     _commands["PRIVMSG"] = &Server::Privmsg;
-    _commands["MODE"] = &Server::Mode;
-    _commands["mode"] = &Server::Mode;
     _commands["WHOIS"] = &Server::Whois;
     _commands["whois"] = &Server::Whois;
+    _commands["NOTICE"] = &Server::Notice;
     _commands["KICK"] = &Server::Kick;
+    _commands["MODE"] = &Server::Mode;
+    _commands["mode"] = &Server::Mode;
     _commands["TOPIC"] = &Server::Topic;
+    _commands["topic"] = &Server::Topic;
+    _commands["LIST"] = &Server::List;
+    _commands["INVITE"] = &Server::Invite;
 }
 
 Server::~Server()

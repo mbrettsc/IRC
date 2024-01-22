@@ -50,6 +50,7 @@ private:
     void bindSocket(size_t const&);
     void setPort(size_t const&);
     void setPassword(std::string const&);
+    Channel getChannel(std::string const&);
     void printStatus();
     void acceptRequest();
     void readEvent(int*);
@@ -63,7 +64,7 @@ private:
     void modesBanned(chanIt&, std::vector<std::string>& param, int* flag);
     void modesLimit(chanIt&, std::vector<std::string>& param, int* flag);
     void modesKey(chanIt&, std::vector<std::string>& param, int* flag);
-
+    void getAfterColon(std::vector<std::string>& param);
     // commands
     void Pass(std::vector<std::string>&, Client&);
     void Nick(std::vector<std::string>&, Client&);
@@ -79,6 +80,9 @@ private:
     void Privmsg(std::vector<std::string>&, Client&);
     void Kick(std::vector<std::string>&, Client&);
     void Topic(std::vector<std::string>&, Client&);
+    void Notice(std::vector<std::string>&, Client&);
+    void List(std::vector<std::string>&, Client&);
+    void Invite(std::vector<std::string>&, Client&);
 public:
     ~Server();
     static int portIsValid(std::string const&);

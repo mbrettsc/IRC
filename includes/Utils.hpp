@@ -61,8 +61,6 @@ class Utils
 {
 public:
     static void writeMessage(int, std::string const&);
-    static std::map<std::string, std::vector<std::string> > getParams(std::string const&);
-    static std::string getCmd(std::string const&);
-    static std::vector<std::string> getParam(std::string const&);
     static void writeAllMessage(std::vector<int> const&, std::string const&);
+    static std::string intToString(int);
 };

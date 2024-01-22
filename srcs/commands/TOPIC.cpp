@@ -9,7 +9,6 @@ std::string getTopic(std::vector<std::string>& param)
             ret += param[i];
             ret += " ";
         }
-        ret.erase(0, 1);
     }
     else
         ret = param[1];
@@ -35,8 +34,10 @@ void Server::Topic(std::vector<std::string>& param, Client& cli)
                     Utils::writeMessage(cli.cliFd, ERR_CHANOPRIVSNEEDED(cli.nick, param[0]));
                     return ;
                 }
-                it->_topic = param[1];
-                Utils::writeAllMessage(it->getFds(), RPL_TOPIC(cli.nick, cli.ipAddr, param[0], getTopic(param).c_str()));
+                it->_topic = getTopic(param);
+                std::string top = it->_topic;
+                top.erase(0, 1);
+                Utils::writeAllMessage(it->getFds(), RPL_TOPIC(cli.nick, cli.ipAddr, param[0], top));
                 return ;
             }
         }
