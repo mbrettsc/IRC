@@ -20,3 +20,14 @@ std::string Utils::intToString(int n)
     std::string str = ss.str();
     return str;
 }
+
+int Utils::portIsValid(std::string const& port)
+{
+    for (size_t i = 0; i < port.size(); ++i) {
+        if (!isdigit(port[i]))
+            return 0;
+    }
+    if (atoi(port.c_str()) > 65535)
+        return 0;
+    return 1;
+}

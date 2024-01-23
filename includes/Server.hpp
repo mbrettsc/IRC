@@ -28,7 +28,7 @@ private:
     size_t _port;
     std::string _password;
     std::vector<Client> _clients;
-    char buffer[1024];
+    char _buffer[1024];
     std::map<std::string, Commands> _commands;
     std::vector<Channel> _channels;
     // fd_set's
@@ -51,7 +51,6 @@ private:
     void bindSocket(size_t const&);
     void setPort(size_t const&);
     void setPassword(std::string const&);
-    Channel& getChannel(std::string const&);
     void printStatus();
     void acceptRequest();
     void readEvent(int*);
@@ -62,10 +61,11 @@ private:
     void passChecker(Client&);
     void kickClient(cliIt&);
     void commandHandler(std::string&, Client&);
-    void modesOp(chanIt&, std::vector<std::string>& param, int* flag);
-    void modesLimit(chanIt&, std::vector<std::string>& param, int* flag);
-    void modesKey(chanIt&, std::vector<std::string>& param, int* flag);
-    void getAfterColon(std::vector<std::string>& param);
+    void modesOp(chanIt&, std::vector<std::string>& params, int* flag);
+    void modesLimit(chanIt&, std::vector<std::string>& params, int* flag);
+    void modesKey(chanIt&, std::vector<std::string>& params, int* flag);
+    void getAfterColon(std::vector<std::string>& params);
+    Channel& getChannel(std::string const&);
     // commands
     void Pass(std::vector<std::string>&, Client&);
     void Nick(std::vector<std::string>&, Client&);
@@ -84,9 +84,9 @@ private:
     void Notice(std::vector<std::string>&, Client&);
     void List(std::vector<std::string>&, Client&);
     void Invite(std::vector<std::string>&, Client&);
+    void Oper(std::vector<std::string>&, Client&);
 public:
     ~Server();
-    static int portIsValid(std::string const&);
     void manageServer(size_t const &, std::string const &);
     static Server* getInstance();
 };

@@ -1,24 +1,24 @@
 #include "../../includes/Server.hpp"
 
-void Server::Invite(std::vector<std::string>& param, Client& cli)
+void Server::Invite(std::vector<std::string>& params, Client& cli)
 {
-    if (isChannelExist(param[1]) == 0) {
-        Utils::writeMessage(cli.cliFd, ERR_NOSUCHCHANNEL(param[1], param[0]));
+    if (isChannelExist(params[1]) == 0) {
+        Utils::writeMessage(cli._cliFd, ERR_NOSUCHCHANNEL(params[1], params[0]));
         return ;
     }
     size_t flag = 0;
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
-        if (it->nick == param[0])
+        if (it->_nick == params[0])
         {
             flag = 1;
-            Channel chan = getChannel(param[1]);
-            if (cli.nick != chan.opNick) {
-                Utils::writeMessage(cli.cliFd, ERR_CHANOPRIVSNEEDED(cli.nick, param[1]));
+            Channel chan = getChannel(params[1]);
+            if (cli._nick != chan._opNick) {
+                Utils::writeMessage(cli._cliFd, ERR_CHANOPRIVSNEEDED(cli._nick, params[1]));
                 return ;
             }
-            Utils::writeMessage(it->cliFd, RPL_INVITE(cli.nick, cli.ipAddr, chan._name, param[1]));
+            Utils::writeMessage(it->_cliFd, RPL_INVITE(cli._nick, cli._ipAddr, chan._name, params[1]));
         }
     }
     if (flag == 0)
-        Utils::writeMessage(cli.cliFd, ERR_NOSUCHNICK);
+        Utils::writeMessage(cli._cliFd, ERR_NOSUCHNICK);
 }

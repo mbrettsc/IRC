@@ -11,20 +11,19 @@
 class Client
 {
 public:
-    int cliFd;
-    int port;
-    char ipAddr[INET_ADDRSTRLEN];
-    std::string user;
-    std::string host;
-    std::string ip;
-    std::string realName;
-    std::string nick;
+    // variables
+    int _cliFd;
+    int _port;
+    int _isCap;
+    int _passChecked;
+    char _ipAddr[INET_ADDRSTRLEN];
+    std::string _buffer;
+    std::string _user;
+    std::string _host;
+    std::string _ip;
+    std::string _realName;
+    std::string _nick;
     std::vector<std::string> _messageBox;
-
-    int         isCap;
-    int         passChecked;
-
-    Client():isCap(0), passChecked(0) {}
-    std::string	        getPrefix() const;
-
+    // methods
+    Client(): _isCap(0), _passChecked(0) {}
 };

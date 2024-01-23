@@ -27,8 +27,8 @@ void Server::initCommands()
     _commands["topic"] = &Server::Topic;
     _commands["LIST"] = &Server::List;
     _commands["INVITE"] = &Server::Invite;
-    // _commands["OP"] = &Server::Op;
-    // _commands["op"] = &Server::Op;
+    _commands["OPER"] = &Server::Oper;
+    _commands["oper"] = &Server::Oper;
 }
 
 Server::~Server()
@@ -81,31 +81,20 @@ void Server::bindSocket(size_t const & port)
         throw std::runtime_error("Listen");
 }
 
-int Server::portIsValid(std::string const& port)
-{
-    for (size_t i = 0; i < port.size(); ++i) {
-        if (!isdigit(port[i]))
-            return 0;
-    }
-    if (atoi(port.c_str()) > 65535)
-        return 0;
-    return 1;
-}
-
 void Server::acceptRequest()
 {
     Client tmp;
     sockaddr_in cliAddr;
     socklen_t cliSize = sizeof(cliAddr);
 
-    tmp.cliFd = accept(_serverFd, (sockaddr *)&cliAddr, &cliSize);
-    if (tmp.cliFd <= 0)
+    tmp._cliFd = accept(_serverFd, (sockaddr *)&cliAddr, &cliSize);
+    if (tmp._cliFd <= 0)
         throw std::runtime_error("Accept failed");
-    tmp.port = ntohs(cliAddr.sin_port);
-    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp.ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
-    FD_SET(tmp.cliFd, &_readFds);
+    tmp._port = ntohs(cliAddr.sin_port);
+    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp._ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
+    FD_SET(tmp._cliFd, &_readFds);
     std::cout << "New client connected!" << std::endl;
-    Utils::writeMessage(tmp.cliFd, "Welcome to our irc server\n");
+    Utils::writeMessage(tmp._cliFd, "Welcome to our irc server\n");
     _clients.push_back(tmp);
 }
 
@@ -154,58 +143,35 @@ void Server::commandHandler(std::string& str, Client& cli)
     }
 }
 
-void Server::kickClient(cliIt& it)
-{
-    std::cout << "Client " << it->cliFd - 3  << " disconnected!" << std::endl;
-    FD_CLR(it->cliFd, &_readFds);
-    FD_CLR(it->cliFd, &_writeFds);
-    close(it->cliFd);
-    _clients.erase(it);
-}
-
-void Server::passChecker(Client& client)
-{
-    if (client.passChecked == 0)
-    {
-        for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
-            if (client.cliFd == it->cliFd)
-            {
-                Utils::writeMessage(client.cliFd, ERR_PASSWDMISMATCH);
-                kickClient(it);
-                break;
-            }
-        }
-    }
-}
-
-int Server::isNickExist(std::string const& nick)
-{
-    for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
-        if (it->nick == nick)
-            return 1;
-    }
-    return 0;
-}
-
 void Server::readEvent(int* state)
 {
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
-        if (FD_ISSET(it->cliFd, &_readFdsSup))
+        if (FD_ISSET(it->_cliFd, &_readFdsSup))
         {
             *state = 0;
-            int readed = read(it->cliFd, buffer, 1024);
+            int readed = read(it->_cliFd, _buffer, 1024);
             if (readed <= 0) {
                 kickClient(it);
                 break;
             }
             else
             {
-                buffer[readed] = 0;
-                std::string tmp = buffer;
-                if (tmp == "\n")
+                _buffer[readed] = 0;
+                std::string tmp = _buffer;
+                if (tmp == "\n") {
+                    *state = 0;
                     break;
-                std::cout << buffer;
-                commandHandler(tmp, *it);
+                }
+                if (tmp[tmp.length() - 1] != '\n') {
+                    it->_buffer += tmp;
+                    *state = 0;
+                    break;
+                }
+                else 
+                    it->_buffer = it->_buffer + tmp;
+                std::cout << it->_buffer;
+                commandHandler(it->_buffer, *it);
+                it->_buffer.clear();
                 break;
             }
         }
@@ -224,12 +190,12 @@ void Server::initFds()
 void Server::writeEvent()
 {
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
-        if (FD_ISSET(it->cliFd, &_writeFdsSup))
+        if (FD_ISSET(it->_cliFd, &_writeFdsSup))
         {
-            int writed = write(it->cliFd, it->_messageBox[0].c_str(), it->_messageBox[0].size());
+            int writed = write(it->_cliFd, it->_messageBox[0].c_str(), it->_messageBox[0].size());
             it->_messageBox.erase(it->_messageBox.begin());
             if (it->_messageBox.empty())
-                FD_CLR(it->cliFd, &_writeFds);
+                FD_CLR(it->_cliFd, &_writeFds);
             if (writed <= 0)
                 kickClient(it);
             break ;

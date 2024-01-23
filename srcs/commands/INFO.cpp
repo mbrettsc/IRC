@@ -35,9 +35,9 @@ std::string infoMessage()
     return (message);
 }
 
-void Server::Info(std::vector<std::string>& x, Client &client)
+void Server::Info(std::vector<std::string>& params, Client &cli)
 {
-    passChecker(client);
-    (void)x;
-    Utils::writeMessage(client.cliFd, RPL_INFO(client.nick, infoMessage()));
+    passChecker(cli);
+    (void)params;
+    Utils::writeMessage(cli._cliFd, RPL_INFO(cli._nick, infoMessage()));
 }
