@@ -15,7 +15,7 @@ void Server::Part(std::vector<std::string>& params, Client& cli)
                         it->_channelClients.erase(it2);
                         if (it->_channelClients.size() > 0)
                             it->_opNick = it->_channelClients[0]._nick;
-                        std::cout << "Client " << cli._nick << " has left channel " << params[0] << std::endl;
+                        std::cout << RED << "Client " << cli._nick << " has left channel " << params[0] << RESET << std::endl;
                         break;
                     }
                 }

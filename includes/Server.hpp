@@ -25,12 +25,13 @@ class Server
 private:
     // variables
     int _serverFd;
+    int _botFd;
     size_t _port;
     std::string _password;
-    std::vector<Client> _clients;
     char _buffer[1024];
     std::map<std::string, Commands> _commands;
     std::vector<Channel> _channels;
+    std::vector<Client> _clients;
     // fd_set's
     fd_set _readFds;
     fd_set _writeFds;
@@ -66,6 +67,7 @@ private:
     void modesKey(chanIt&, std::vector<std::string>& params, int* flag);
     void getAfterColon(std::vector<std::string>& params);
     Channel& getChannel(std::string const&);
+    void BotNotice(std::vector<std::string>&, Client&);
     // commands
     void Pass(std::vector<std::string>&, Client&);
     void Nick(std::vector<std::string>&, Client&);
@@ -85,6 +87,7 @@ private:
     void List(std::vector<std::string>&, Client&);
     void Invite(std::vector<std::string>&, Client&);
     void Oper(std::vector<std::string>&, Client&);
+    void Bot(std::vector<std::string>&, Client&);
 public:
     ~Server();
     void manageServer(size_t const &, std::string const &);

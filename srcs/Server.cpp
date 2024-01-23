@@ -2,7 +2,7 @@
 #include "../includes/Utils.hpp"
 
 Server* Server::singleton = NULL;
-Server::Server() {}
+Server::Server(): _botFd(0) {}
 
 void Server::initCommands()
 {
@@ -29,6 +29,7 @@ void Server::initCommands()
     _commands["INVITE"] = &Server::Invite;
     _commands["OPER"] = &Server::Oper;
     _commands["oper"] = &Server::Oper;
+    _commands["bot"] = &Server::Bot;
 }
 
 Server::~Server()
@@ -36,6 +37,7 @@ Server::~Server()
     if (singleton != NULL)
         delete singleton;
     singleton = NULL;
+    close(_serverFd);
 }
 
 Server* Server::getInstance()
@@ -93,8 +95,7 @@ void Server::acceptRequest()
     tmp._port = ntohs(cliAddr.sin_port);
     inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp._ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
     FD_SET(tmp._cliFd, &_readFds);
-    std::cout << "New client connected!" << std::endl;
-    Utils::writeMessage(tmp._cliFd, "Welcome to our irc server\n");
+    std::cout << GREEN << "New client connected!" << RESET << std::endl;
     _clients.push_back(tmp);
 }
 
@@ -137,7 +138,7 @@ void Server::commandHandler(std::string& str, Client& cli)
     std::map<std::string, std::vector<std::string> > params = getParams(str);
     for (std::map<std::string, std::vector<std::string> >::iterator it = params.begin(); it != params.end(); ++it) {
         if (_commands.find(it->first) == _commands.end())
-            std::cout << it->first << " command not found!" << std::endl;
+            std::cout << RED << it->first << " command not found!" << RESET << std::endl;
         else
             (this->*_commands[it->first])(it->second, cli);
     }
@@ -169,7 +170,7 @@ void Server::readEvent(int* state)
                 }
                 else 
                     it->_buffer = it->_buffer + tmp;
-                std::cout << it->_buffer;
+                std::cout << YELLOW << it->_buffer << RESET;
                 commandHandler(it->_buffer, *it);
                 it->_buffer.clear();
                 break;
@@ -202,7 +203,49 @@ void Server::writeEvent()
         }
     }
 }
+/*.-.  .-. .----. .-.    .----.  .---.  .-.  .-. .----.   .-----.  .---.  
+| {  } | } |__} } |    | }`-' / {-. \ }  \/  { } |__}   `-' '-' / {-. \ 
+{  /\  } } '__} } '--. | },-. \ '-} / | {  } | } '__}     } {   \ '-} / 
+`-'  `-' `----' `----' `----'  `---'  `-'  `-' `----'     `-'    `---'  
+                                                                        
+                     .---.  .-. .-. .---.    
+                    / {-. \ | } { | } }}_}             mbrettsc
+                    \ '-} / \ `-' / | } \              uakkan
+                     `---'   `---'  `-'-'              ykarabul
+                                             
+.-. .---.  .----.      .----. .----. .---.  .-.   .-..----. .---.  
+{ | } }}_} | }`-'     { {__-` } |__} } }}_}  \ \_/ / } |__} } }}_} 
+| } | } \  | },-.     .-._} } } '__} | } \    \   /  } '__} | } \  
+`-' `-'-'  `----'     `----'  `----' `-'-'     `-'   `----' `-'-' */
 
+
+/*
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠞⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠲⡑⢄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢮⣣⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠱⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡆⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡤⠤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣹⠀
+⠀⠀⠀⠀⢀⣀⣀⣸⢧⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⣩⡤⠶⠶⠶⠦⠤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⡇
+⠀⠀⠀⣰⣫⡏⠳⣏⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⠁⠀⠀⠀⠀⠀⠀⠙⢿⣿⣶⣄⡀⠀⠀⢀⡀⠀⠀⠀⠀⠀⡀⡅⡇
+⠀⠀⢰⡇⣾⡇⠀⠙⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣶⠿⠛⠻⢿⣶⣤⣍⡙⢿⣿⣷⣤⣾⡇⣼⣆⣴⣷⣿⣿⡇⡇
+⠀⠀⢸⡀⡿⠁⠀⡇⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣯⠴⢲⣶⣶⣶⣾⣿⣿⣿⣷⠹⣿⣿⠟⢰⣿⣿⣿⠿⣿⣿⣿⠁
+⠀⠀⠈⡇⢷⣾⣿⡿⢱⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠹⣌⠳⣼⣿⣿⣿⣻⣿⣿⣿⣿⡇⠈⠁⢰⣿⣿⣿⣿⣶⣾⣿⣿⠀
+⠀⠀⠀⣷⠘⠿⣿⡥⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠃⠌⠉⣿⣿⣿⣿⣿⣿⠟⠃⠀⢀⡿⣿⣿⣿⣿⣿⣿⣿⡞⠀
+⠀⠀⠀⢸⡇⠀⠹⠗⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡿⠟⠉⠉⠀⠀⠀⠈⢃⣿⣿⣿⣿⣿⣿⡻⠀⠀
+⠀⠀⠀⠈⢧⠀⠀⠏⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⠁⠀⠀
+⠀⠀⠀⠀⠈⢳⠶⠞⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠆⠀⠀⠊⠁⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⣼⣿⣀⡰⠀⠀⣤⣄⠀⠀⠀⠀⢹⣿⣿⣿⣿⢻⠀⠀⠀
+⠀⠀⠀⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠹⣿⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠙⣿⣿⣿⡏⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣄⢠⣤⣶⣤⣀⠀⢀⣶⣶⣶⣿⣿⠟⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠖⠁⠀⠀⠀⠀⠀⠻⣿⣿⣥⣤⣯⣥⣾⣿⣿⣿⣿⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣰⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠁⠀⠀⠀⠠⠀⠀⠀⠀⠈⣿⣿⣼⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠊⠀⠀⠀⣠⣰⣄⡀⠀⢀⣀⣀⣛⣟⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀
+⠀⣠⠜⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣼⠾⠛⠛⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀
+⠾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡟⠀⠀⠀⠀⠠⣄⣉⣉⣻⣿⣿⣿⣿⣿⣿⡟⠧⢄⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⠅⠀⠀⠀⠀⠘⠉⠹⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠀⠉⠓⠢⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣉⣿⣿⣿⣿⣿⣿⣿⣿⣷⣻⡄⠀⠀⢀⡑⠢⠄
+*/
 void Server::run()
 {
     int state = 0;
@@ -244,9 +287,9 @@ void Server::printStatus()
     char name[255];
 
     gethostname(name, sizeof(name));
-    std::cout << "Port: " << _port << std::endl;
-    std::cout << "Password: " << _password << std::endl;
-    std::cout << "Server running on: " << name << std::endl;
+    std::cout << CYAN << "Server running on: " << name << RESET << std::endl;
+    std::cout << CYAN <<"Password: " << _password << RESET << std::endl;
+    std::cout << CYAN << "Port: " << _port << RESET << std::endl;
 }
 
 void Server::manageServer(size_t const& port, std::string const& password)

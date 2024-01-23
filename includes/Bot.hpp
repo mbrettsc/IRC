@@ -19,9 +19,13 @@ private:
     void setPort(int);
     void setPasword(std::string const&);
     void createSocket();
+    void run();
+    void execute(std::string const&);
 public:
     Bot(): _fd(0), _port(0), _password("") {};
     ~Bot();
+    // Bot(const Bot &);
+    // Bot &operator=(const Bot &);
     static Bot *getInstance();
-    void run(int, std::string const&);
+    void manageBot(int, std::string const&);
 };
