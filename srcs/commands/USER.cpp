@@ -1,29 +1,28 @@
 #include "../../includes/Server.hpp"
 
-void Server::User(std::vector<std::string>& param, Client& cli)
+void Server::User(std::vector<std::string>& params, Client& cli)
 {
-    if (cli.isCap == NC)
+    if (cli._isCap == NC)
         passChecker(cli);
-    if (param.size() < 4)
-        Utils::writeMessage(cli.cliFd, ERR_NEEDMOREPARAMS(cli.nick, param[0]));
-    else if (!cli.user.empty())
-        Utils::writeMessage(cli.cliFd, ERR_ALREADYREGISTRED);
+    if (params.size() < 4)
+        Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(cli._nick, params[0]));
+    else if (!cli._user.empty())
+        Utils::writeMessage(cli._cliFd, ERR_ALREADYREGISTRED);
     else {
-        cli.user = param[0];
-        cli.host = param[1];
-        cli.ip = param[2];
-        if (param[3][0] != ':')
-            cli.realName = param[3];
+        cli._user = params[0];
+        cli._host = params[1];
+        cli._ip = params[2];
+        if (params[3][0] != ':')
+            cli._realName = params[3];
         else {
             size_t i = 3;
-            while (i < param.size()) {
-                cli.realName += param[i];
-                if (i != param.size() - 1)
-                    cli.realName += " ";
+            while (i < params.size()) {
+                cli._realName += params[i];
+                if (i != params.size() - 1)
+                    cli._realName += " ";
                 ++i;
             }
-            cli.realName.erase(0, 1);
+            cli._realName.erase(0, 1);
         }
-        std::cout << cli.realName << std::endl;
     }
 }

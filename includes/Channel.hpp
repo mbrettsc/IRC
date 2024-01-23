@@ -2,26 +2,20 @@
 
 #include <vector>
 #include <iostream>
-#include "../includes/Client.hpp"
+
+class Client;
 
 class Channel
 {
 public:
+    // variables
+    size_t _userLimit;
     std::string _name;
     std::string _topic;
     std::string _key;
-    size_t userLimit;
-    Client* op;
+    std::string _opNick;
     std::vector<Client> _channelClients;
-    std::vector<std::string> _bannedClients;
-    Channel() : _key(""),  userLimit(0), op(NULL) {}
-
-
-    std::vector<int> getFds()
-    {
-        std::vector<int> fds;
-        for (std::vector<Client>::iterator it = _channelClients.begin(); it != _channelClients.end(); ++it)
-            fds.push_back(it->cliFd);
-        return fds;
-    }
+    Channel() : _userLimit(0), _name(""), _topic(""), _key(""), _opNick("") {}
+    // methods
+    std::vector<int> getFds() const;
 };

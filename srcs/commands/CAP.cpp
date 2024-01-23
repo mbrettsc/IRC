@@ -1,7 +1,7 @@
 #include "../../includes/Server.hpp"
 
-void Server::Cap(std::vector<std::string>& param, Client& cli)
+void Server::Cap(std::vector<std::string>& params, Client& cli)
 {
-    if (param[0] == "LS")
-        cli.isCap = 1;
+    if (params[0] == "LS")
+        cli._isCap = 1;
 }

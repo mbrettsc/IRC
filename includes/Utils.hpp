@@ -44,6 +44,7 @@
 #define ERR_NOSUCHCHANNEL(source, channel)			": 403 " + source + " " + channel + " :No such channel" + "\r\n"                    //MODE
 #define ERR_NICKNAMEINUSE(source)				    ": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"         //NICK
 #define ERR_NICKNAMEEMPTY(source)				    ": 433 " + source + " " + source  + " :Nickname cannot empty" + "\r\n"              //NICK
+#define ERR_UNKNOWNMODE(source, channel, mode)	    ": 472 " + source + " " +  channel + " :Unknown Mode " + mode + "\r\n"              //MODE
 #define RPL_NOTOPIC(nick, channel)                  ": 331 " + nick + " " + channel + " :No topic is set" + "\r\n"                      //TOPIC
 
 
@@ -63,4 +64,5 @@ public:
     static void writeMessage(int, std::string const&);
     static void writeAllMessage(std::vector<int> const&, std::string const&);
     static std::string intToString(int);
+    static int portIsValid(std::string const& port);
 };
