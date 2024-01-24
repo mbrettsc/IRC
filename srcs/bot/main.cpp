@@ -7,7 +7,7 @@ int main(int ac, char **av)
             throw std::runtime_error("./bot <port> <password>");
         if (!Utils::portIsValid(av[1]))
             throw std::runtime_error("invalid port");
-        Bot::getInstance()->run(atoi(av[1]), av[2]);
+        Bot::getInstance()->manageBot(atoi(av[1]), av[2]);
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }

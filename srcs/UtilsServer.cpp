@@ -11,7 +11,7 @@ int Server::isNickExist(std::string const& nick)
 
 void Server::kickClient(cliIt& it)
 {
-    std::cout << "Client " << it->_cliFd - 3  << " disconnected!" << std::endl;
+    std::cout << RED << "Client " << it->_cliFd - 3  << " disconnected!" << RESET << std::endl;
     FD_CLR(it->_cliFd, &_readFds);
     FD_CLR(it->_cliFd, &_writeFds);
     close(it->_cliFd);
@@ -22,6 +22,7 @@ void Server::passChecker(Client& client)
 {
     if (client._passChecked == 0)
     {
+        std::cout << RED << client._cliFd - 3 << " is not logged in. Tschüss!" << RESET << std::endl;
         for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
             if (client._cliFd == it->_cliFd)
             {

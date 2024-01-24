@@ -17,5 +17,8 @@ public:
     std::vector<Client> _channelClients;
     Channel() : _userLimit(0), _name(""), _topic(""), _key(""), _opNick("") {}
     // methods
+    // ~Channel();
+    // Channel(const Channel &);
+    // Channel &operator=(const Channel &);
     std::vector<int> getFds() const;
 };

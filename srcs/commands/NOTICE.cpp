@@ -1,7 +1,19 @@
 #include "../../includes/Server.hpp"
 
+void Server::BotNotice(std::vector<std::string>& params, Client& cli)
+{
+    for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->_isCap != BOT && it->_nick != params[1])
+            Utils::writeMessage(it->_cliFd, RPL_NOTICE(cli._nick, params[1], params[2]));
+    }
+}
+
 void Server::Notice(std::vector<std::string>& params, Client& cli)
 {
+    if (params[0] == "*") {
+        BotNotice(params, cli);
+        return ;
+    }
     if (params[0][0] == '#') {
         Utils::writeMessage(cli._cliFd, "Cannot notice a channel\r\n");
         return ;

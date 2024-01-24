@@ -41,7 +41,8 @@ void Server::toClient(std::vector<std::string>& params, Client& cli)
 
 void Server::Privmsg(std::vector<std::string>& params, Client& cli)
 {
-    passChecker(cli);
+    if (cli._isCap == NC)
+        passChecker(cli);
     if (params.size() < 2)
     {
         Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(cli._nick, params[0]));

@@ -2,14 +2,18 @@
 
 void Server::Join(std::vector<std::string>& params, Client& cli)
 {
-    passChecker(cli);
-    std::string chan = params[0], key = params[1];
+    if (cli._isCap == NC)
+        passChecker(cli);
+    std::string key = "";
+    std::string chan = params[0];
+    if (params.size() == 2)
+        key = params[1];
     int isThere = 0;
     if (chan.empty()) {
         Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(cli._nick, "JOIN"));
         return;
     }
-    if (chan[0] != '#') {
+    if (chan[0] != '#' || chan.size() == 1) {
         Utils::writeMessage(cli._cliFd, ERR_INVCHANNAME);
         return;
     }
@@ -30,7 +34,7 @@ void Server::Join(std::vector<std::string>& params, Client& cli)
                         it->_channelClients.push_back(cli);
                         it->_opNick = it->_channelClients[0]._nick;
                         Utils::writeMessage(cli._cliFd, RPL_JOIN(cli._nick, cli._ip, chan));
-                        std::cout << "Client " << cli._nick << " has entered \'" << chan << "\'" << std::endl;
+                        std::cout << PURPLE << "Client " << cli._nick << " has entered \'" << chan << "\'" << RESET << std::endl;
                         showRightGui(cli, *it);
                     }
                     else
@@ -49,9 +53,9 @@ void Server::Join(std::vector<std::string>& params, Client& cli)
                 _channels.push_back(tmp);
                 Utils::writeMessage(cli._cliFd, RPL_JOIN(cli._nick, cli._ip, chan));
                 if (!key.empty())
-                    std::cout << "Channel " << chan << " created with " << key << std::endl;
+                    std::cout << PURPLE << "Channel " << chan << " created with " << key << RESET << std::endl;
                 else
-                    std::cout << "Channel " << chan << " created" << std::endl;
+                    std::cout << PURPLE << "Channel " << chan << " created" << RESET << std::endl;
                 showRightGui(cli, tmp);
             }
         }

@@ -4,6 +4,16 @@
 #include <sstream>
 #include "../includes/Server.hpp"
 
+# define BLACK		"\033[0;30m"
+# define RED		"\033[0;31m"
+# define GREEN		"\033[0;32m"
+# define YELLOW		"\033[0;33m"
+# define BLUE		"\033[0;34m"
+# define PURPLE		"\033[0;35m"
+# define CYAN		"\033[0;36m"
+# define WHITE		"\033[0;37m"
+# define END		"\033[m"
+# define RESET		"\033[0m"
 
 #define RPL_JOIN(nick, ip, channel)					":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 #define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
@@ -33,7 +43,7 @@
 # define RPL_LISTEND(nick)						    ": 323 " + nick + " :End of /LIST\r\n"
 
 
-#define RPL_WELCOME(source, msg)				    source + msg + "\r\n"
+#define RPL_WELCOME(source, msg)				     + msg + "\r\n"source
 
 /* [ERROR MESSAGES] */
 #define ERR_CHANNELISFULL(source, channel)			": 471 " + source + " " + channel + " :Cannot join channel (+l)" + "\r\n"           //JOIN
@@ -65,4 +75,6 @@ public:
     static void writeAllMessage(std::vector<int> const&, std::string const&);
     static std::string intToString(int);
     static int portIsValid(std::string const& port);
+    static std::string theRock();
+    static std::string welcome();
 };

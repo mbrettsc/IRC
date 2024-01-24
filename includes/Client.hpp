@@ -7,6 +7,7 @@
 
 #define NC 0
 #define HEX 1
+#define BOT 2
 
 class Client
 {
@@ -26,4 +27,7 @@ public:
     std::vector<std::string> _messageBox;
     // methods
     Client(): _isCap(0), _passChecked(0) {}
+    // ~Client();
+    // Client(const Client &);
+    // Client &operator=(const Client &);
 };
