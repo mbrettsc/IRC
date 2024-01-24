@@ -12,5 +12,5 @@ void Server::Bot(std::vector<std::string>& params, Client& cli)
         Utils::writeMessage(cli._cliFd, "Bot is not connected\r\n");
         return ;
     }
-    Utils::writeMessage(_botFd, "BOT " + cli._nick + " " + params[0] + "\r\n");
+    Utils::writeMessage(_botFd, "bot " + cli._nick + " " + params[0] + "\r\n");
 }

@@ -88,6 +88,7 @@ private:
     void Invite(std::vector<std::string>&, Client&);
     void Oper(std::vector<std::string>&, Client&);
     void Bot(std::vector<std::string>&, Client&);
+    void Help(std::vector<std::string>&, Client&);
 public:
     ~Server();
     void manageServer(size_t const &, std::string const &);

@@ -4,9 +4,14 @@ Bot* Bot::singleton = NULL;
 
 Bot* Bot::getInstance()
 {
-    if (singleton == NULL)
-        singleton = new Bot;
-    return singleton;
+    try {
+        if (singleton == NULL)
+            singleton = new Bot;
+        return singleton;
+    } catch (std::exception & e) {
+        std::cerr << e.what() << std::endl;
+        exit(1);
+    }
 }
 
 Bot::~Bot()
@@ -46,22 +51,22 @@ void Bot::run()
     int login = 0;
     while (1)
     {
-        char buffer[1024];
-        int bytes_received = recv(_fd, buffer, sizeof(buffer), 0);
-        buffer[bytes_received] = '\0';
-        std::string tmp = buffer;
-        if (bytes_received <= 0)
-            throw std::runtime_error("recv() failed");
         if (!login)
         {
             std::string msg = "CAP BOT\nPASS " + _password +"\nNICK BOT\n";
             Utils::writeMessage(_fd, msg);
             login = 1;
         }
+        char buffer[1024];
+        int bytes_received = recv(_fd, buffer, sizeof(buffer), 0);
+        buffer[bytes_received] = '\0';
+        std::string tmp = buffer;
+        if (bytes_received <= 0)
+            throw std::runtime_error("recv() failed");
         std::stringstream ss(tmp);
         std::string ctr;
         ss >> ctr;
-        if (ctr == "BOT" || ctr == "bot")
+        if (ctr == "bot")
         {
             ss >> tmp;
             ss >> ctr;

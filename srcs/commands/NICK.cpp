@@ -9,6 +9,8 @@ void Server::Nick(std::vector<std::string>& params, Client& cli)
             for (cliIt cit = it->_channelClients.begin(); cit != it->_channelClients.end(); ++cit) {
                 if (cli._nick == cit->_nick)
                 {
+                    if (cit->_nick == it->_opNick)
+                        it->_opNick = params[0];
                     cit->_nick = params[0];
                     break;
                 }

@@ -13,7 +13,7 @@ void Server::Join(std::vector<std::string>& params, Client& cli)
         Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(cli._nick, "JOIN"));
         return;
     }
-    if (chan[0] != '#') {
+    if (chan[0] != '#' || chan.size() == 1) {
         Utils::writeMessage(cli._cliFd, ERR_INVCHANNAME);
         return;
     }
