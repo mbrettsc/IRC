@@ -3,7 +3,7 @@
 
 - BOT
 - CAP
-- HELP
+- HELPME
 - INFO
 - INVITE
 - JOIN
