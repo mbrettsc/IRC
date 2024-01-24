@@ -15,3 +15,6 @@ void Server::Quit(std::vector<std::string>& params, Client& cli)
             }
     }
 }
+
+// TO DO 
+// QUIT SIKISIYOR
