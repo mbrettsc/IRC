@@ -34,6 +34,8 @@ void Server::Kick(std::vector<std::string>& params, Client& cli)
                     return ;
                 }
             }
+            if (flag == 1)
+                Utils::writeMessage(getOpFd(it->_opNick), ": 431 " + it->_opNick + " " + params[0] + " : " +  params[1] + " not in this channel\r\n");
         }
        }
        if (flag == 0)
