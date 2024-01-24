@@ -2,8 +2,10 @@
 
 void Server::Join(std::vector<std::string>& params, Client& cli)
 {
-    if (cli._isCap == NC)
+    if (cli._passChecked == 0) {
         passChecker(cli);
+        return ;
+    }
     std::string key = "";
     std::string chan = params[0];
     if (params.size() == 2)
