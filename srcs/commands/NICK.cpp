@@ -2,10 +2,6 @@
 
 void Server::Nick(std::vector<std::string>& params, Client& cli)
 {
-    if (cli._passChecked == 0) {
-        passChecker(cli);
-        return ;
-    }
     if (params.size() == 1 && !isNickExist(params[0]) && !params[0].empty() && params[0].size() <= 9) {
         for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {
             for (cliIt cit = it->_channelClients.begin(); cit != it->_channelClients.end(); ++cit) {

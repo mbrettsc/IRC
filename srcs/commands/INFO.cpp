@@ -22,7 +22,7 @@ std::string infoMessage()
     message += "| * Current commands:                                      |\n";
     message += "|   - BOT                                                  |\n";
     message += "|   - CAP                                                  |\n";
-    message += "|   - HELP                                                 |\n";
+    message += "|   - HELPME                                               |\n";
     message += "|   - INFO                                                 |\n";
     message += "|   - INVITE                                               |\n";
     message += "|   - JOIN                                                 |\n";

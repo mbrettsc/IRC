@@ -30,7 +30,7 @@ void Server::initCommands()
     _commands["OPER"] = &Server::Oper;
     _commands["oper"] = &Server::Oper;
     _commands["bot"] = &Server::Bot;
-    _commands["HELP"] = &Server::Help;
+    _commands["HELPME"] = &Server::Help;
 }
 
 Server::~Server()
