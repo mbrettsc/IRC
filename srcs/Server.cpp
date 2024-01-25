@@ -4,6 +4,26 @@
 Server* Server::singleton = NULL;
 Server::Server(): _botFd(0) {}
 
+Server::~Server()
+{
+    if (singleton != NULL)
+        delete singleton;
+    singleton = NULL;
+    close(_serverFd);
+}
+
+Server* Server::getInstance()
+{
+    try {
+        if (singleton == NULL)
+            singleton = new Server;
+        return singleton;
+    } catch (std::exception & e) {
+        std::cerr << e.what() << std::endl;
+        exit(1);
+    }
+}
+
 void Server::initCommands()
 {
     _commands["PASS"] = &Server::Pass;
@@ -28,39 +48,8 @@ void Server::initCommands()
     _commands["LIST"] = &Server::List;
     _commands["INVITE"] = &Server::Invite;
     _commands["OPER"] = &Server::Oper;
-    _commands["oper"] = &Server::Oper;
     _commands["bot"] = &Server::Bot;
     _commands["HELPME"] = &Server::Help;
-}
-
-Server::~Server()
-{
-    if (singleton != NULL)
-        delete singleton;
-    singleton = NULL;
-    close(_serverFd);
-}
-
-Server* Server::getInstance()
-{
-    try {
-        if (singleton == NULL)
-            singleton = new Server;
-        return singleton;
-    } catch (std::exception & e) {
-        std::cerr << e.what() << std::endl;
-        exit(1);
-    }
-}
-
-void Server::setPort(size_t const& port)
-{
-    _port = port;
-}
-
-void Server::setPassword(std::string const& password)
-{
-    _password = password;
 }
 
 void Server::createSocket()
@@ -245,16 +234,6 @@ void Server::run()
         }
         
     }
-}
-
-void Server::printStatus()
-{
-    char name[255];
-
-    gethostname(name, sizeof(name));
-    std::cout << CYAN << "Server running on: " << name << RESET << std::endl;
-    std::cout << CYAN <<"Password: " << _password << RESET << std::endl;
-    std::cout << CYAN << "Port: " << _port << RESET << std::endl;
 }
 
 void Server::manageServer(size_t const& port, std::string const& password)

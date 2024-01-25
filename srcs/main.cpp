@@ -13,5 +13,3 @@ int main(int ac, char **av)
     }
     return 0;
 }
-
-// TO DO IF SOMEONE QUITS USING QUIT COMMAND OR CTRL + C, REMOVE HIM FROM CHANNELS

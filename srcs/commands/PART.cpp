@@ -15,14 +15,16 @@ void Server::Part(std::vector<std::string>& params, Client& cli)
                         it->_channelClients.erase(it2);
                         if (it->_channelClients.size() > 0)
                             it->_opNick = it->_channelClients[0]._nick;
-                        if (it->_channelClients.size() == 0)
-                            _channels.erase(it);
                         std::cout << RED << "Client " << cli._nick << " has left channel " << params[0] << RESET << std::endl;
                         break;
                     }
                 }
-                showRightGui(cli, *it);
+                if (it->_channelClients.size() == 0)
+                    _channels.erase(it);
+                else
+                    showRightGui(cli, *it);
                 Utils::writeMessage(cli._cliFd, RPL_PART(cli._nick, params[0]));
+                break;
             }
         }
     }

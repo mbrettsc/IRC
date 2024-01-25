@@ -97,3 +97,24 @@ void Server::showRightGui(Client &cli, Channel &tmp) {
     Utils::writeAllMessage(tmp.getFds(), RPL_NAMREPLY(cli._nick, tmp._name, msg));
     Utils::writeAllMessage(tmp.getFds(), RPL_ENDOFNAMES(cli._nick, tmp._name));
 }
+
+void Server::setPort(size_t const& port)
+{
+    _port = port;
+}
+
+void Server::setPassword(std::string const& password)
+{
+    _password = password;
+}
+
+void Server::printStatus()
+{
+    char name[255];
+
+    gethostname(name, sizeof(name));
+    std::cout << CYAN << "Server running on: " << name << RESET << std::endl;
+    std::cout << CYAN <<"Password: " << _password << RESET << std::endl;
+    std::cout << CYAN << "Port: " << _port << RESET << std::endl;
+}
+

@@ -1,21 +1,31 @@
 NAME = ircserv
-CC = c++ -std=c++98
-FLAGS = -Wall -Wextra -Werror
+CC = c++
+CFLAGS = -std=c++98 -Wall -Wextra -Werror
+SRC_DIR = srcs
+OBJ_DIR = obj
+SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/commands/*.cpp)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 all: $(NAME)
 
-$(NAME):
-	$(CC) $(FLAGS) srcs/*.cpp srcs/commands/*.cpp -o $(NAME) 
+$(NAME): $(OBJ_FILES)
+	$(CC) $(CFLAGS) $^ -o $@
 
-bonus: all
-	$(CC) $(FLAGS) srcs/bot/*.cpp srcs/Utils.cpp -o bot
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(dir $(OBJ_FILES))
+
+bonus:
+	$(CC) $(CFLAGS) $(SRC_DIR)/bot/*.cpp $(SRC_DIR)/Utils.cpp $^ -o bot
 
 clean:
-	rm -rf $(NAME)
+	rm -rf $(NAME) bot
 
 fclean: clean
-	rm -rf bot
+	rm -rf $(OBJ_DIR)
 
-re: clean all
+re: fclean all
 
-.PHONY: all clean re bonus
+.PHONY: all clean fclean re bonus
