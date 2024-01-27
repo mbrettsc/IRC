@@ -26,7 +26,7 @@ void Server::Join(std::vector<std::string>& params, Client& cli)
             for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {
                 if (it->_name == chan)
                 {
-                    if (it->_key == "" || it->_key == key)
+                    if (it->_key == key)
                     {
                         if (it->_userLimit != 0 && it->_channelClients.size() >= it->_userLimit)
                         {
@@ -39,6 +39,8 @@ void Server::Join(std::vector<std::string>& params, Client& cli)
                         std::cout << PURPLE << "Client " << cli._nick << " has entered \'" << chan << "\'" << RESET << std::endl;
                         showRightGui(cli, *it);
                     }
+                    else if (it->_key == "")
+                        Utils::writeMessage(cli._cliFd, "Key not required for this channel!\r\n");
                     else
                         Utils::writeMessage(cli._cliFd, ERR_BADCHANNELKEY(cli._nick, chan));
                     isThere = 1;

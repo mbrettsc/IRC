@@ -37,6 +37,7 @@ private:
     fd_set _writeFds;
     fd_set _readFdsSup;
     fd_set _writeFdsSup;
+    int _fdCount;
     // methods
     Server();
     std::map<std::string, std::vector<std::string> > getParams(std::string const& str);

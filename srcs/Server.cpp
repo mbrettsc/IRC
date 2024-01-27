@@ -2,7 +2,7 @@
 #include "../includes/Utils.hpp"
 
 Server* Server::singleton = NULL;
-Server::Server(): _botFd(0) {}
+Server::Server(): _botFd(0), _fdCount(0) {}
 
 Server::~Server()
 {
@@ -31,7 +31,6 @@ void Server::initCommands()
     _commands["JOIN"] = &Server::Join;
     _commands["CAP"] = &Server::Cap;
     _commands["USER"] = &Server::User;
-    _commands["MODE"] = &Server::Mode;
     _commands["WHO"] = &Server::Who;
     _commands["QUIT"] = &Server::Quit;
     _commands["PART"] = &Server::Part;
@@ -56,7 +55,7 @@ void Server::createSocket()
 {
     if ((_serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) // AF_INET = IPV4, SOCK_STREAM = TCP
         throw std::runtime_error("Socket");
-
+    fcntl(_serverFd, F_SETFL, O_NONBLOCK);
     const int enable = 1;
     if (setsockopt(_serverFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) // SO_REUSEADDR = PORT AND ADDR REUSE
         throw std::runtime_error("Setsockopt");
@@ -85,12 +84,14 @@ void Server::acceptRequest()
     socklen_t cliSize = sizeof(cliAddr);
 
     tmp._cliFd = accept(_serverFd, (sockaddr *)&cliAddr, &cliSize);
+    fcntl(tmp._cliFd, F_SETFL, O_NONBLOCK);
     if (tmp._cliFd <= 0)
         throw std::runtime_error("Accept failed");
     tmp._port = ntohs(cliAddr.sin_port);
     inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp._ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
     FD_SET(tmp._cliFd, &_readFds);
     std::cout << GREEN << "New client connected!" << RESET << std::endl;
+    _fdCount++;
     _clients.push_back(tmp);
 }
 
@@ -150,7 +151,9 @@ void Server::readEvent(int* state)
             *state = 0;
             int readed = read(it->_cliFd, _buffer, 1024);
             if (readed <= 0) {
-                kickClient(it); break;
+                std::vector<std::string> tmp;
+                tmp.push_back("");
+                (this->*_commands["QUIT"])(tmp, *it);
             }
             else
             {
@@ -169,8 +172,8 @@ void Server::readEvent(int* state)
                 std::cout << YELLOW << it->_buffer << RESET;
                 commandHandler(it->_buffer, *it);
                 it->_buffer.clear();
-                break;
             }
+            break;
         }
     }
 }
@@ -194,7 +197,11 @@ void Server::writeEvent()
             if (it->_messageBox.empty())
                 FD_CLR(it->_cliFd, &_writeFds);
             if (writed <= 0)
-                kickClient(it);
+            {
+                std::vector<std::string> tmp;
+                tmp.push_back("");
+                (this->*_commands["QUIT"])(tmp, *it);
+            }
             break ;
         }
     }
@@ -207,13 +214,9 @@ void Server::run()
     initFds();
     while (1)
     {
-        while (state == 0)
-        {
-            _readFdsSup = _readFds; // TO DO SELECT IS QUEUED ?
-            _writeFdsSup = _writeFds;
-            state = select(_clients.size() + 4, &_readFdsSup, &_writeFdsSup, NULL, 0);
-        }
-        // new connection
+        _readFdsSup = _readFds;
+        _writeFdsSup = _writeFds;
+        state = select(_fdCount + 4, &_readFdsSup, &_writeFdsSup, NULL, 0);
         if (FD_ISSET(_serverFd, &_readFdsSup)) {
             acceptRequest();
             state = 0; continue;

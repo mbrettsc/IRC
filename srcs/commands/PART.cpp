@@ -19,8 +19,10 @@ void Server::Part(std::vector<std::string>& params, Client& cli)
                         break;
                     }
                 }
-                if (it->_channelClients.size() == 0)
+                if (it->_channelClients.size() == 0) {
+                    std::cout << RED << "Channel " << it->_name << " is deleted" << RESET << std::endl;
                     _channels.erase(it);
+                }
                 else
                     showRightGui(cli, *it);
                 Utils::writeMessage(cli._cliFd, RPL_PART(cli._nick, params[0]));
