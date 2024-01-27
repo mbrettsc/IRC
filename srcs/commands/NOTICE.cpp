@@ -2,9 +2,13 @@
 
 void Server::BotNotice(std::vector<std::string>& params, Client& cli)
 {
+    std::string msg = "";
+    for (size_t i = 0; i < params.size(); ++i) {
+        msg += params[i] + " ";
+    }
     for (cliIt it = _clients.begin(); it != _clients.end(); ++it) {
         if (it->_isCap != BOT && it->_nick != params[1])
-            Utils::writeMessage(it->_cliFd, RPL_NOTICE(cli._nick, params[1], params[2]));
+            Utils::writeMessage(it->_cliFd, RPL_NOTICE(cli._nick, params[1], msg));
     }
 }
 

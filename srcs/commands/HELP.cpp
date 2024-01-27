@@ -4,10 +4,10 @@ std::string returnHelp()
 {
     std::string ret;
 
-    ret += "First of all you need to enter Server Password with PASS command\r\n";
-    ret += "Then you need to enter your nickname with NICK command\r\n";
-    ret += "After that you can see the all commands with INFO command\r\n";
-    ret += "ENJOY :)\r\n";
+    ret += "To get started, begin by entering your server password using the PASS command.\r\n";
+    ret += "Next, set your nickname with the NICK command.\r\n";
+    ret += "Explore available commands and features with the INFO command.\r\n";
+    ret += "Enjoy your time on the server! :)\r\n";
 
     return ret;
 }
