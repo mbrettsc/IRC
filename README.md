@@ -1,14 +1,8 @@
 #  FT_IRC
 
-  
-
-This project is an implementation of an Internet Relay Chat (IRC) system, following the specifications outlined in RFC 1459. IRC is a widely used protocol for real-time communication in the form of text messages between users in a network of servers. RFC 1459 defines the standards for IRC, covering various aspects such as message formats, server-client communication, channel management, and user authentication.
-
-  
+This project is an implementation of an Internet Relay Chat (IRC) server, following the specifications outlined in RFC 1459. IRC is a widely used protocol for real-time communication in the form of text messages between users in a network of servers. RFC 1459 defines the standards for IRC, covering various aspects such as message formats, server-client communication, channel management, and user authentication.
 
 ##  Table of Contents
-
-  
 
 -  [Commands](#commands)
 
@@ -18,12 +12,7 @@ This project is an implementation of an Internet Relay Chat (IRC) system, follow
 
 -  [Developers](#developers)
 
-  
-  
-
 ##  Commands
-
-  
 
 -  **BOT**: If the bot is connected to the server, it will broadcast a message to all clients, and the content of this message will be based on the first parameter provided
 
@@ -79,15 +68,11 @@ This project is an implementation of an Internet Relay Chat (IRC) system, follow
 
 -  nc "hostname" "port".
 
--  Then you can see how to enter the server with "HELPME" command.
-
-  
+-  Then you can see how to enter the server with "HELPME" command.  
 
 ##  License
 
- 
 [MIT License](LICENSE)
-
 
 ## Developers
 
