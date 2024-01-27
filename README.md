@@ -14,9 +14,9 @@ This project is an implementation of an Internet Relay Chat (IRC) server, follow
 
 ##  Commands
 
--  **BOT**: If the bot is connected to the server, it will broadcast a message to all clients, and the content of this message will be based on the first parameter provided
+-  **BOT**: If the bot is connected to the server, it will broadcast a message to all clients, and the content of this message will be based on the first parameter provided.
 
--  **CAP**: The CAP command serves as a handshake mechanism between server to HexChat and the bot
+-  **CAP**: The CAP command serves as a handshake mechanism between server to HexChat and bot.
 
 -  **HELPME**: The HELPME command provides users with explanations on how to connect to the server using Netcat. It is a helpful resource for users who may be new to the IRC environment or need assistance with the connection process.
 
