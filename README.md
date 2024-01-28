@@ -4,13 +4,48 @@ This project is an implementation of an Internet Relay Chat (IRC) server, follow
 
 ##  Table of Contents
 
--  [Commands](#commands)
+-  [Developers](#developers)
 
 -  [Usage](#usage)
 
+-  [Commands](#commands)
+
 -  [License](#license)
 
--  [Developers](#developers)
+## Developers
+
+[![-----------------------------------------------------](
+https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
+
+<table>
+  <tbody>
+    <tr>
+      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/mbrettsc"><img  src="https://avatars.githubusercontent.com/u/99292553?v=4"  width="100px;"  alt="Martin Burak Brettschneider"/><br  /><sub><b>Martin Burak Brettschneider</b></sub></a><br  /></td>
+      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/yigithankarabulut"><img  src="https://avatars.githubusercontent.com/u/120645917?v=4"  width="100px;"  alt="Yiğithan Karabulut"/><br  /><sub><b>Yiğithan Karabulut</b></sub></a><br  /></td>
+      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/umuttakkan"><img  src="https://avatars.githubusercontent.com/u/91291348?v=4"  width="100px;"  alt="Umut Akkan"/><br  /><sub><b>Umut Akkan</b></sub></a><br  /></td>
+</td>
+    </tr>
+  </table>
+</tbody>
+   
+[![-----------------------------------------------------](
+https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
+
+## Usage
+
+###  Hexchat
+
+-  After installing Hexchat, in the "Network List" window, click the "Add" button to add a new server.
+
+-  Enter the server name, edit the address and port for your IRC server.
+
+-  In the "Login Method" field, enter the Server Password command (/PASS password).
+
+###  Netcat (nc)
+
+-  nc "hostname" "port".
+
+-  Then you can see how to enter the server with "HELPME" command.  
 
 ##  Commands
 
@@ -54,41 +89,6 @@ This project is an implementation of an Internet Relay Chat (IRC) server, follow
 
 -  **WHOIS**: The WHOIS command prints detailed information about a specific user, providing insights into their connection details and other relevant information. 
 
-## Usage
-
-###  Hexchat
-
--  After installing Hexchat, in the "Network List" window, click the "Add" button to add a new server.
-
--  Enter the server name, edit the address and port for your IRC server.
-
--  In the "Login Method" field, enter the Server Password command (/PASS password).
-
-###  Netcat (nc)
-
--  nc "hostname" "port".
-
--  Then you can see how to enter the server with "HELPME" command.  
-
 ##  License
 
 [MIT License](LICENSE)
-
-## Developers
-
-[![-----------------------------------------------------](
-https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
-
-<table>
-  <tbody>
-    <tr>
-      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/mbrettsc"><img  src="https://avatars.githubusercontent.com/u/99292553?v=4"  width="100px;"  alt="Martin Burak Brettschneider"/><br  /><sub><b>Martin Burak Brettschneider</b></sub></a><br  /></td>
-      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/yigithankarabulut"><img  src="https://avatars.githubusercontent.com/u/120645917?v=4"  width="100px;"  alt="Yiğithan Karabulut"/><br  /><sub><b>Yiğithan Karabulut</b></sub></a><br  /></td>
-      <td  align="center"  valign="top"  width="20%"><a  href="https://github.com/umuttakkan"><img  src="https://avatars.githubusercontent.com/u/91291348?v=4"  width="100px;"  alt="Umut Akkan"/><br  /><sub><b>Umut Akkan</b></sub></a><br  /></td>
-</td>
-    </tr>
-  </table>
-</tbody>
-   
-[![-----------------------------------------------------](
-https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
