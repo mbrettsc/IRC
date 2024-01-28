@@ -124,6 +124,8 @@ std::map<std::string, std::vector<std::string> > Server::getParams(std::string c
             ret[cmd] = params;
             return ret;
         }
+        if (params.empty())
+            params.push_back("");
         ret[cmd] = params;
     }
     return ret;
