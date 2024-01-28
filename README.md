@@ -17,6 +17,7 @@ This project is an implementation of an Internet Relay Chat (IRC) server, follow
 [![-----------------------------------------------------](
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
 
+<div align="center">
 <table>
   <tbody>
     <tr>
@@ -27,6 +28,7 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
     </tr>
   </table>
 </tbody>
+</div>
    
 [![-----------------------------------------------------](
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/mbrettsc)
