@@ -27,7 +27,6 @@ void Server::Kick(std::vector<std::string>& params, Client& cli)
                         std::string msg = "";
                         if (params.size() == 3)
                             msg = params[2];
-                        std::cout << msg << std::endl;
                         Utils::writeMessage(it2->_cliFd, RPL_KICK(it->_opNick, params[0], params[1], msg));
                         Utils::writeMessage(it2->_cliFd, RPL_ENDOFNAMES(it2->_nick, params[0]));
                         it->_channelClients.erase(it2);

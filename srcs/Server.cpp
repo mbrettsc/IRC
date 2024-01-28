@@ -53,11 +53,11 @@ void Server::initCommands()
 
 void Server::createSocket()
 {
-    if ((_serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) // AF_INET = IPV4, SOCK_STREAM = TCP
+    if ((_serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw std::runtime_error("Socket");
     fcntl(_serverFd, F_SETFL, O_NONBLOCK);
     const int enable = 1;
-    if (setsockopt(_serverFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) // SO_REUSEADDR = PORT AND ADDR REUSE
+    if (setsockopt(_serverFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
         throw std::runtime_error("Setsockopt");
 }
 
@@ -73,7 +73,7 @@ void Server::bindSocket(size_t const & port)
     if (bind(_serverFd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
         throw std::runtime_error("Bind");
 
-    if (listen(_serverFd, 128) < 0) // TODO LISTEN DOWN
+    if (listen(_serverFd, SOMAXCONN) < 0)
         throw std::runtime_error("Listen");
 }
 
@@ -88,7 +88,7 @@ void Server::acceptRequest()
     if (tmp._cliFd <= 0)
         throw std::runtime_error("Accept failed");
     tmp._port = ntohs(cliAddr.sin_port);
-    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp._ipAddr, INET_ADDRSTRLEN); // TODO: INET_NTOP
+    inet_ntop(AF_INET, &(cliAddr.sin_addr), tmp._ipAddr, INET_ADDRSTRLEN);
     FD_SET(tmp._cliFd, &_readFds);
     std::cout << GREEN << "New client connected!" << RESET << std::endl;
     _fdCount++;
@@ -221,15 +221,11 @@ void Server::run()
             acceptRequest();
             state = 0; continue;
         }
-        
-        // read event
         if (state) {
             readEvent(&state);
             if (state == 0)
                 continue;
         }
-        
-        // write event
         if (state) {
             writeEvent();
             state = 0;
