@@ -3,8 +3,7 @@
 
 void Server::Mode(std::vector<std::string>& params, Client& cli)
 {
-    if (cli._isCap == NC)
-        passChecker(cli);
+    passChecker(cli);
     if (params.size() == 1)
         return;
     if (params.size() < 1 || params.size() > 3) {

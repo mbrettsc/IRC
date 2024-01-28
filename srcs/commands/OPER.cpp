@@ -2,6 +2,7 @@
 
 void Server::Oper(std::vector<std::string>& params, Client& cli)
 {
+    passChecker(cli);
     if (params.size() != 2) {
         Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(params[0], cli._nick));
         return ;

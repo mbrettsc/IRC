@@ -2,6 +2,7 @@
 
 void Server::List(std::vector<std::string>& params, Client& cli)
 {
+    passChecker(cli);
     (void)params;
     Utils::writeMessage(cli._cliFd, RPL_LISTSTART(cli._nick, Utils::intToString(_clients.size())));
     for (chanIt it = _channels.begin(); it != _channels.end(); ++it) {

@@ -14,6 +14,7 @@ void Server::BotNotice(std::vector<std::string>& params, Client& cli)
 
 void Server::Notice(std::vector<std::string>& params, Client& cli)
 {
+    passChecker(cli);
     if (params[0] == "*") {
         BotNotice(params, cli);
         return ;

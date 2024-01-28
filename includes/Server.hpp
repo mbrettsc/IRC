@@ -47,6 +47,7 @@ class Server
         int getOpFd(std::string const& opName);
         int clientIsInThere(Client&, std::string const&);
         int isChannelExist(std::string const&);
+        int CheckNickDepends(std::vector<std::string>&, Client&);
         void toChannel(std::vector<std::string>&, Client&);
         void toClient(std::vector<std::string>&, Client&);
         void createSocket();
