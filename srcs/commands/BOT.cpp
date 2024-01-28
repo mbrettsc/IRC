@@ -2,7 +2,6 @@
 
 void Server::Bot(std::vector<std::string>& params, Client& cli)
 {
-    std::cout << params.size() << std::endl;
     if (cli._isCap == NC)
         passChecker(cli);
     if (cli._nick == "") {
@@ -13,7 +12,6 @@ void Server::Bot(std::vector<std::string>& params, Client& cli)
         Utils::writeMessage(cli._cliFd, ERR_NEEDMOREPARAMS(cli._nick, "BOT"));
         return ;
     }
-    std::cout << "NASILLLL -----------" << std::endl;
     if (_botFd == 0) {
         Utils::writeMessage(cli._cliFd, "Bot is not connected\r\n");
         return ;

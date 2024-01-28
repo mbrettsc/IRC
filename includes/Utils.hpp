@@ -70,11 +70,11 @@
 
 class Utils
 {
-public:
-    static void writeMessage(int, std::string const&);
-    static void writeAllMessage(std::vector<int> const&, std::string const&);
-    static std::string intToString(int);
-    static int portIsValid(std::string const& port);
-    static std::string theRock();
-    static std::string welcome();
+    public:
+        static void writeMessage(int, std::string const&);
+        static void writeAllMessage(std::vector<int> const&, std::string const&);
+        static std::string intToString(int);
+        static int portIsValid(std::string const& port);
+        static std::string theRock();
+        static std::string welcome();
 };

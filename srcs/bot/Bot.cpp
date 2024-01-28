@@ -73,7 +73,6 @@ void Bot::run()
             std::string msg = ctr;
             while (ss >> ctr)
                 msg += " " + ctr;
-            std::cout << msg << std::endl;
             std::string writeCmd = "NOTICE * " + tmp + " " + msg + "\r\n";
             Utils::writeMessage(_fd, writeCmd);
         }

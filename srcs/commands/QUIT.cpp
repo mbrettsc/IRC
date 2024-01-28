@@ -22,7 +22,6 @@ void Server::Quit(std::vector<std::string>& params, Client& cli)
             itChan->_channelClients.erase(itClient);
             if (itChan->_channelClients.size() > 0)
             {
-                std::cout << "0.index name: " << itChan->_channelClients[0]._nick << std::endl;
                 itChan->_opNick = itChan->_channelClients[0]._nick;
                 showRightGui(cli, *itChan);
             }
@@ -47,5 +46,4 @@ void Server::Quit(std::vector<std::string>& params, Client& cli)
     }
     Utils::writeMessage(cli._cliFd, RPL_QUIT(cli._nick, params[0].c_str()));
     kickClient(baseIt);
-    std::cout << "hj,amhsbmnbvgf" << std::endl;
 }

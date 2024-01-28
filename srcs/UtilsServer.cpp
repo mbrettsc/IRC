@@ -117,4 +117,3 @@ void Server::printStatus()
     std::cout << CYAN <<"Password: " << _password << RESET << std::endl;
     std::cout << CYAN << "Port: " << _port << RESET << std::endl;
 }
-
