@@ -41,7 +41,7 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 
 -  Enter the server name, edit the address and port for your IRC server.
 
--  In the "Login Method" field, enter the Server Password command (/PASS password).
+-  In the "Login Method" field, select the Server Password command (/PASS password).
 
 ###  Netcat (nc)
 
