@@ -2,6 +2,7 @@
 
 void Server::Invite(std::vector<std::string>& params, Client& cli)
 {
+    passChecker(cli);
     if (isChannelExist(params[1]) == 0) {
         Utils::writeMessage(cli._cliFd, ERR_NOSUCHCHANNEL(params[1], params[0]));
         return ;
