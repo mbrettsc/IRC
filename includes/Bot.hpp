@@ -17,14 +17,14 @@ class Bot
         static Bot* singleton;
         
         // methods
+        Bot(): _fd(0), _port(0), _password("") {};
+        ~Bot();
         void setPort(int);
         void setPasword(std::string const&);
         void createSocket();
         void run();
         void execute(std::string const&);
     public:
-        Bot(): _fd(0), _port(0), _password("") {};
-        ~Bot();
         static Bot *getInstance();
         void manageBot(int, std::string const&);
 };

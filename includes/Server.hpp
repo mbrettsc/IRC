@@ -40,6 +40,7 @@ class Server
         
         // methods
         Server();
+        ~Server();
         std::map<std::string, std::vector<std::string> > getParams(std::string const& str);
         static Server* singleton;
         void showRightGui(Client &cli, Channel &cha);
@@ -93,7 +94,6 @@ class Server
         void Bot(std::vector<std::string>&, Client&);
         void Help(std::vector<std::string>&, Client&);
     public:
-        ~Server();
         void manageServer(size_t const &, std::string const &);
         static Server* getInstance();
 };
